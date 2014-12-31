@@ -81,8 +81,10 @@ Route::get('login/fb/callback', function() {
 
 // logout
 Route::get('logout', function() {
+
 	Auth::logout();
 	return Redirect::to('/')->with('message', 'ログアウトしました');
+
 });
 
 
