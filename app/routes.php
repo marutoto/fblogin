@@ -20,7 +20,11 @@ Route::get('/', function() {
 
 	$threads = Thread::with(['ress' => function($q) {
 		$q->orderBy('res_no', 'desc');
-	}])->orderBy('updated_at', 'desc')->orderBy('id', 'desc')->get();
+	}])
+		->orderBy('updated_at', 'desc')
+		->orderBy('id', 'desc')
+		->take(10)
+		->get();
 
 	$ress = [];
 	foreach($threads as $thread) {
@@ -203,6 +207,7 @@ Route::post('/res/save', function () {
 	try {
 
 		$res = Res::create($inputs);
+		$thread->updated_at = $res->created_at;
 		$thread->save(); // スレッド一覧で表示順位を上げるための更新
 		return Redirect::to('/detail/' . $thread->id)->with('success', 'レスしました <a href="#res_' . $res->res_no . '">>> ' . $res->res_no . '</a>');
 
