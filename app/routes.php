@@ -156,14 +156,63 @@ Route::post('/thread/save', function () {
 });
 
 
-// post thread response
-Route::post('/thread/response', function () {
+// confirm res
+Route::post('/res/confirm', function () {
 
-	echo 'response';
-	exit;
+	$inputs = Input::only('body', 'thread_id', 'user_id');
+
+	$thread = Thread::find($inputs['thread_id']);
+	if(!$thread) {
+		return Redirect::to('/')->with('error', 'スレッドが存在しません');
+	}
+
+	$validator = Validator::make($inputs,[
+		'body' => 'required',
+	]);
+
+	if($validator->fails()) {
+		return Redirect::to('/detail/' . $thread->id . '/#res-form')
+			->withErrors($validator)
+			->withInput();
+	}
+
+	$view_data['inputs'] = $inputs;
+	return View::make('confirm_res', $view_data);
 
 });
 
+// save res
+Route::post('/res/save', function () {
+
+	$inputs = Input::only('body', 'thread_id', 'user_id');
+
+	$thread = Thread::find($inputs['thread_id']);
+	if(!$thread) {
+		return Redirect::to('/')->with('error', 'スレッドが存在しません');
+	}
+
+	$res_last = Res::where('thread_id', $thread->id)
+		->orderBy('res_no', 'desc')
+		->first();
+	if($res_last) {
+		$inputs['res_no'] = $res_last->res_no + 1;
+	} else {
+		$inputs['res_no'] = 2;
+	}
+
+	try {
+
+		$res = Res::create($inputs);
+		$thread->save(); // スレッド一覧で表示順位を上げるための更新
+		return Redirect::to('/detail/' . $thread->id)->with('success', 'レスしました <a href="#res_' . $res->res_no . '">>> ' . $res->res_no . '</a>');
+
+	} catch(Exception $e) {
+
+		return Redirect::to('/detail/' . $thread->id)->with('error', 'レスに失敗しました');
+
+	}
+
+});
 
 
 /*** エラーハンドリング ***/

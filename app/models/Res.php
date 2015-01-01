@@ -10,6 +10,14 @@ class Res extends Base {
 	protected $table = 'ress';
 
 
+	protected $fillable = array(
+		'thread_id',
+		'res_no',
+		'body',
+		'user_id',
+	);
+
+
 	/*** リレーション設定 ***/
 	public function thread(){
 		return $this->belongsTo('thread');

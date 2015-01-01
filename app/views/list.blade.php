@@ -58,7 +58,6 @@
 				{{ Form::text('title', '', array('class' => 'form-control')) }}
 				{{ Form::label('body', '内容', array('class' => 'control-label', 'for' => 'body')) }}
 				{{ Form::textarea('body', '', array('class' => 'form-control', 'rows' => 3, 'cols' => 40)) }}
-				{{-- Form::file('csv', array('class' => 'form-control right-margin')) --}}
 
 				{{ Form::hidden('user_id', $me->id) }}
 			</div>
