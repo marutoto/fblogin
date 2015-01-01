@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration {
+class CreateThreadsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,17 +12,13 @@ class CreateUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('users', function($table) {
+		Schema::create('threads', function($table) {
 
 			$table->increments('id');
-			$table->biginteger('fbid');
-			$table->string('first_name');
-			$table->string('last_name');
-			$table->string('name');
-			$table->string('gender');
-			$table->string('photo');
-
-			$table->rememberToken();
+			$table->string('title');
+			$table->text('body');
+			$table->string('uploaded_img');
+			$table->integer('user_id');
 
 			$table->softDeletes();
 			$table->timestamps();
@@ -37,7 +33,7 @@ class CreateUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('threads');
 	}
 
 }

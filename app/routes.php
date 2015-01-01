@@ -16,15 +16,35 @@
 // list thread
 Route::get('/', function() {
 
-	return View::make('list');
+	$view_data = [];
+
+	$threads = Thread::with(['ress' => function($q) {
+		$q->orderBy('res_no', 'desc');
+	}])->get();
+
+	$ress = [];
+	foreach($threads as $thread) {
+		$ress_desc = $thread->ress->take(10)->toArray();
+		$ress[$thread->id] = array_reverse($ress_desc);
+	}
+
+	$view_data['threads'] = $threads;
+	$view_data['ress'] = $ress;
+	return View::make('list', $view_data);
 
 });
 
 
 // show thread detail
-Route::get('/detail', function() {
+Route::get('/detail/{thread_id?}', function($thread_id) {
 
-	return View::make('detail');
+	$thread = Thread::find($thread_id);
+	if(!$thread) {
+		Redirect::to('/')->with('message', 'スレッドがありません');;
+	}
+
+	$view_data['thread'] = $thread;
+	return View::make('detail', $view_data);
 
 });
 
