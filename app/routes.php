@@ -20,12 +20,14 @@ Route::get('/', function() {
 
 	$threads = Thread::with(['ress' => function($q) {
 		$q->orderBy('res_no', 'desc');
-	}])->get();
+	}])->orderBy('updated_at', 'desc')->orderBy('id', 'desc')->get();
 
 	$ress = [];
 	foreach($threads as $thread) {
-		$ress_desc = $thread->ress->take(10)->toArray();
-		$ress[$thread->id] = array_reverse($ress_desc);
+		// $ress_desc = $thread->ress->take(10)->toArray();
+		// $ress[$thread->id] = array_reverse($ress_desc);
+		//TODO:reverse
+		$ress[$thread->id] = $thread->ress->take(10);
 	}
 
 	$view_data['threads'] = $threads;
@@ -40,7 +42,7 @@ Route::get('/detail/{thread_id?}', function($thread_id) {
 
 	$thread = Thread::find($thread_id);
 	if(!$thread) {
-		Redirect::to('/')->with('message', 'スレッドがありません');;
+		Redirect::to('/')->with('error', 'スレッドがありません');;
 	}
 
 	$view_data['thread'] = $thread;
@@ -68,12 +70,12 @@ Route::get('/login/fb', function() {
 Route::get('login/fb/callback', function() {
 
 	$code = Input::get('code');
-	if(strlen($code) == 0) return Redirect::to('/')->with('message', 'Facebookとの接続でエラーが発生しました。');
+	if(strlen($code) == 0) return Redirect::to('/')->with('error', 'Facebookとの接続でエラーが発生しました。');
 
 	$facebook = new Facebook(Config::get('facebook'));
 	$fbid = $facebook->getUser();
 
-	if($fbid == 0) return Redirect::to('/')->with('message', 'エラーが発生しました。');
+	if($fbid == 0) return Redirect::to('/')->with('error', 'エラーが発生しました。');
 
 	$me = $facebook->api('/me');
 
@@ -94,7 +96,7 @@ Route::get('login/fb/callback', function() {
 
 	Auth::login($user);
 
-	return Redirect::to('/')->with('message', 'Facebookログインしました');
+	return Redirect::to('/')->with('success', 'Facebookログインしました');
 
 });
 
@@ -103,7 +105,7 @@ Route::get('login/fb/callback', function() {
 Route::get('logout', function() {
 
 	Auth::logout();
-	return Redirect::to('/')->with('message', 'ログアウトしました');
+	return Redirect::to('/')->with('success', 'ログアウトしました');
 
 });
 
@@ -114,13 +116,45 @@ Route::get('logout', function() {
 // define Auth filter
 Route::when( 'thread*', 'auth' );
 
-// create thread
-Route::post('/thread/create', function () {
+// confirm thread
+Route::post('/thread/confirm', function () {
 
-	echo 'create thread';
-	exit;
+	$inputs = Input::only('title', 'body', 'user_id');
+
+	$validator = Validator::make($inputs,[
+		'title' => 'required',
+		'body' => 'required',
+	]);
+
+	if($validator->fails()) {
+		return Redirect::to('/#thread-form')
+			->withErrors($validator)
+			->withInput();
+	}
+
+	$view_data['inputs'] = $inputs;
+	return View::make('confirm_thread', $view_data);
 
 });
+
+// save thread
+Route::post('/thread/save', function () {
+
+	$inputs = Input::only('title', 'body', 'user_id');
+
+	try {
+
+		$thread = Thread::create($inputs);
+		return Redirect::to('/detail/' . $thread->id)->with('success', 'スレッドを作成しました');
+
+	} catch(Exception $e) {
+
+		return Redirect::to('/')->with('error', 'スレッドの作成に失敗しました');
+
+	}
+
+});
+
 
 // post thread response
 Route::post('/thread/response', function () {
@@ -128,4 +162,13 @@ Route::post('/thread/response', function () {
 	echo 'response';
 	exit;
 
+});
+
+
+
+/*** エラーハンドリング ***/
+
+// 404
+App::missing(function($exception) {
+    return Redirect::to('/')->with('error', '不正なアクセス、またはURLが間違っています');
 });

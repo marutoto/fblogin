@@ -28,9 +28,16 @@
 			</div>
 		</div>
 
-		@if(Session::has('message'))
+		{{-- メッセージ領域 --}}
+		@if(Session::has('success'))
 		<div class="alert alert-success">
-			{{ Session::get('message')}}
+			{{ Session::get('success')}}
+		</div>
+		@endif
+
+		@if(Session::has('error'))
+		<div class="alert alert-danger">
+			{{ Session::get('error')}}
 		</div>
 		@endif
 

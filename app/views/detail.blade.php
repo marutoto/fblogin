@@ -19,14 +19,16 @@
 	<div>{{{ $thread->title }}}</div>
 
 	<div>
-		{{{ $thread->body }}}
+		1 {{{ $thread->user->name }}} {{{ $thread->created_at }}}<br>
+		{{ nl2br($thread->body) }}
 	</div>
 
 	<br>
 
 	@foreach($thread->ress as $res)
 		<div>
-			{{{ $res->body }}}
+			{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ $res->created_at }}}<br>
+			{{ nl2br($res->body) }}
 		</div>
 	@endforeach
 

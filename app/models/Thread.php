@@ -10,6 +10,13 @@ class Thread extends Base {
 	protected $table = 'threads';
 
 
+	protected $fillable = array(
+		'title',
+		'body',
+		'user_id',
+	);
+
+
 	/*** リレーション設定 ***/
 	public function ress(){
 		return $this->hasMany('Res');
