@@ -9,34 +9,45 @@ var require = {
 	// ※ jsonで記述（シングルクォーテーションは使えない）
 	paths: {
 
-		/*** 共通ライブラリ ***/
-		// twitter bootstrap
-		"bootstrap": "../../bootstrap/3.1.0/js/bootstrap.min",
-
+		/*** vendor ***/
 		// jquery
 		"jquery": "lib/vendor/jquery/jquery-1.11.0.min",
 
-		// original
-		//"register": "lib/my/register",
+		// underscore
+		"underscore": "lib/vendor/underscore/underscore-min",
+
+		// twitter bootstrap
+		"bootstrap": "../../bootstrap/3.1.0/js/bootstrap.min",
+
+		// popeasy(modal)
+		"modal": "lib/vendor/modal/popeasy/jquery.modal.min",
+
+		/*** original ***/
+		// common
+		"common": "lib/original/common",
 
 	},
 
 	// モジュールの依存関係を定義（読み込む順を指定することができる）
 	shim: {
-		/*-----------------↓サンプル（後で書き直す）↓------------------*/
-		// jquery-uiの依存関係を定義
-		// 簡易定義
-		//"jquery.ui.core": ['jquery'],
-		//"jquery.ui.widget": ['jquery.ui.core'],
-		//"jquery.ui.mouse": ['jquery.ui.widget'],
-		//"jquery.ui.draggable": ['jquery.ui.mouse'],
-		//"jquery.ui.dialog": ['jquery.ui.widget'],
-		/*-----------------↑サンプル（後で書き直す）↑------------------*/
 
-		"bootstrap": ['jquery'],
+		/*** vendor ***/
+		"underscore": {
+			exports: '_',
+		},
+		"bootstrap": {
+			deps: ['jquery'],
+		},
+		"modal": {
+			deps: ['jquery'],
+		},
 
-		// original
-		//"register": ['jquery'],
+		/*** original ***/
+		// common
+		"common": {
+			exports: 'common',
+			deps: ['jquery', 'bootstrap', 'underscore', 'modal'],
+		},
 	}
 
 

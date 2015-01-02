@@ -62,7 +62,7 @@ Route::get('/login/fb', function() {
 
 	$params = array(
 		'redirect_uri' => url('/login/fb/callback'),
-		'scope' => 'email',
+		'scope' => 'email,user_photos',
 	);
 
 	return Redirect::to($facebook->getLoginUrl($params));
@@ -218,6 +218,124 @@ Route::post('/res/save', function () {
 	}
 
 });
+
+
+// get Facebook Albums
+Route::post('fbalbums', function () {
+
+	$facebook = new Facebook(Config::get('facebook'));
+
+	//TODO:user_photosのパーミッションがなければここでも取得
+	// $inputs = Input::only('code');
+	// $url = 'http://fblogin.marutoto.com/fbalbum';
+	// if(!$inputs['code']) {
+	// 	$dialog_url = "http://www.facebook.com/dialog/oauth?client_id=" . Config::get('facebook.appId') . "&redirect_uri=" . urlencode($url) . '&scope=user_photos';
+	// 	echo("<script> top.location.href='" . $dialog_url . "'</script>");
+	// }
+
+	$access_token = $facebook->getAccessToken();
+
+	$param = [
+		'access_token' => $access_token,
+	];
+	$ret = $facebook->api('/me/albums', 'GET', $param);
+	$albums_tmp = $ret['data'];
+
+	$albums = [];
+	foreach($albums_tmp as $album) {
+
+		$albums[] = [
+			'id' => $album['id'],
+			'name' => $album['name'],
+			'count' => $album['count'],
+		];
+
+	}
+
+	$data = [
+		'result' => [
+			'albums' => $albums,
+		],
+		'error' => 0,
+	];
+
+	echo json_encode($data);
+
+});
+
+// get Facebook Photos
+Route::post('fbphotos', function () {
+
+	$inputs = Input::only('album_id');
+
+	$facebook = new Facebook(Config::get('facebook'));
+
+	$ret = $facebook->api('/' . $inputs['album_id'] . '/photos', 'GET');
+	$photos_tmp = $ret['data'];
+
+	$photos = [];
+	foreach($photos_tmp as $photo) {
+
+		preg_match('/\/.*\?/', $photo['source'], $tmp);
+		$tmp = explode('/', $tmp[0]);
+		$tmp = end($tmp);
+		$photo_name = str_replace('?', '', $tmp);
+
+		$photos[] = [
+			'orig_url' => $photo['source'],
+			'width' => $photo['width'],
+			'height' => $photo['height'],
+			'name' => $photo_name,
+		];
+
+	}
+
+	$data = [
+		'result' => [
+			'photos' => $photos,
+		],
+		'error' => 0,
+	];
+
+	echo json_encode($data);
+
+});
+
+// temporary upload Facebook Photo
+Route::post('fbupload', function () {
+
+	$inputs = Input::only('photo_orig_url', 'photo_name', 'tmpimg_path');
+
+	// 既に画像がアップロードされている場合（2回目以降）はtmpimgを削除する
+	if($inputs['tmpimg_path'] && file_exists($inputs['tmpimg_path'])) {
+		unlink($inputs['tmpimg_path']);
+	}
+
+	$tmpimg_url = '/assets/uploaded/tmp/' . $inputs['photo_name'];
+	$tmpimg_path = $_SERVER['DOCUMENT_ROOT'] . $tmpimg_url;
+
+	$dl_img = file_get_contents($inputs['photo_orig_url']);
+	file_put_contents($tmpimg_path, $dl_img);
+
+	//TODO:暗号化
+	$tmpimg_info = [
+		'url' => $tmpimg_url,
+		'path' => $tmpimg_path,
+	];
+
+	$data = [
+		'result' => [
+			'tmpimg_info' => $tmpimg_info,
+		],
+		'error' => 0,
+	];
+
+	echo json_encode($data);
+
+});
+
+
+
 
 
 /*** エラーハンドリング ***/

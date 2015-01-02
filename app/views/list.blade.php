@@ -52,21 +52,51 @@
 			</div>
 			@endif
 
-			{{ Form::open(array('url' => url() . '/thread/confirm', 'files' => true, 'class' => 'form-inline')) }}
+			{{ Form::open(['url' => url() . '/thread/confirm', 'files' => true, 'class' => 'form-inline']) }}
 			<div class="panel-body pos-center">
-				{{ Form::label('title', 'タイトル', array('class' => 'control-label', 'for' => 'title')) }}
-				{{ Form::text('title', '', array('class' => 'form-control')) }}
-				{{ Form::label('body', '内容', array('class' => 'control-label', 'for' => 'body')) }}
-				{{ Form::textarea('body', '', array('class' => 'form-control', 'rows' => 3, 'cols' => 40)) }}
+				{{ Form::label('title', 'タイトル', ['class' => 'control-label', 'for' => 'title']) }}
+				{{ Form::text('title', '', ['class' => 'form-control']) }}
+				{{ Form::label('body', '内容', ['class' => 'control-label', 'for' => 'body']) }}
+				{{ Form::textarea('body', '', ['class' => 'form-control', 'rows' => 3, 'cols' => 40]) }}
 
-				{{ Form::hidden('user_id', $me->id) }}
+				<div id="selected-img"></div>
+				<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
+				{{ Form::hidden('tmpimg_path', '', ['id' => 'hidden-tmpimg-path']) }}
+
+				{{ Form::hidden('user_id', $me->id, []) }}
 			</div>
 			<div class="panel-body pos-center">
-				{{ Form::submit('スレッド確認', array('class' => 'btn btn-primary')) }}
+				{{ Form::submit('スレッド確認', ['class' => 'btn btn-primary']) }}
 			</div>
 			{{ Form::close() }}
 
 		</div>
+
+		<!--TODO:view切り出す-->
+		<div id="fb-modal-area">
+			<div class="overlay"></div>
+			<div id="fb-modal" class="modal panel panel-default">
+
+				<div id="fb-modal-contents"></div>
+
+			</div>
+		</div>
+
+		<script type="text/template" id="template_fb-albums-contents">
+			<% for(var i = 0, length = albums.length; i < length; i++) { %>
+				<div class="fb-photos" data-album_id="<%=albums[i].id %>">
+					<a href="#"><%=albums[i].name %></a>
+				</div>
+			<% } %>
+		</script>
+
+		<script type="text/template" id="template_fb-photos-contents">
+			<% for(var i = 0, length = photos.length; i < length; i++) { %>
+				<div class="fb-upload" data-photo_orig_url="<%=photos[i].orig_url %>" data-photo_name="<%=photos[i].name %>">
+					<a href="#"><img src="<%=photos[i].orig_url %>" width="70" height="70" /></a>
+				</div>
+			<% } %>
+		</script>
 	@endif
 
 @stop

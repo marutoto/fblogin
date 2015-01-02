@@ -2,9 +2,10 @@
 <html lang="ja-JP">
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="{{ url().'/assets/bootstrap/3.1.0/css/bootstrap.min.css' }}"></style>
-		<link rel="stylesheet" href="{{ url().'/assets/app/css/common/override_bootstrap.css' }}"></style>
-		<link rel="stylesheet" href="{{ url().'/assets/app/css/common/style.css' }}"></style>
+		<link rel="stylesheet" href="{{ url().'/assets/bootstrap/3.1.0/css/bootstrap.min.css' }}">
+		<link rel="stylesheet" href="{{ url().'/assets/app/css/common/override_bootstrap.css' }}">
+		<link rel="stylesheet" href="{{ url().'/assets/app/css/common/vendor/modal/popeasy/main.css' }}">
+		<link rel="stylesheet" href="{{ url().'/assets/app/css/common/style.css' }}">
 
 		<script>
 			var DOC_ROOT = '{{ $doc_root }}';
