@@ -26,6 +26,12 @@ var require = {
 		// common
 		"common": "lib/original/common",
 
+		// underscore wrap method
+		"underscore_wrap": "lib/original/underscore_wrap",
+
+		// facebook
+		"facebook": "lib/original/facebook",
+
 	},
 
 	// モジュールの依存関係を定義（読み込む順を指定することができる）
@@ -43,13 +49,19 @@ var require = {
 		},
 
 		/*** original ***/
-		// common
 		"common": {
 			exports: 'common',
-			deps: ['jquery', 'bootstrap', 'underscore', 'modal'],
+			deps: ['jquery', 'bootstrap', 'underscore_wrap', 'modal', 'facebook'],
 		},
+		"underscore_wrap": {
+			exports: 'us_wrap',
+			deps: ['underscore'],
+		},
+		"facebook": {
+			exports: 'fb',
+			deps: ['jquery', 'underscore_wrap'],
+		}
+
 	}
-
-
 
 };

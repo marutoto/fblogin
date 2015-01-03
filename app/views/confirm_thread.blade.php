@@ -8,7 +8,7 @@
 	</script>
 	<script type="text/javascript"
 	        src="{{ url() . '/assets/app/js/require/require.min.js' }}"
-	        data-main="pages/detail"></script>
+	        data-main="pages/confirm_thread"></script>
 @stop
 
 

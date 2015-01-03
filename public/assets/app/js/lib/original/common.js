@@ -1,13 +1,14 @@
 
 define([
 
-	// このページで使用するライブラリを指定
+	// 使用するライブラリを指定
 	'jquery',
-	'underscore',
+	'underscore_wrap',
+	'facebook',
 	'bootstrap',
 	'modal',
 
-], function (jQuery, _) {
+], function (jQuery, us_wrap, fb) {
 
 	// モーダル設定
 	$('.modal-link').modal({
@@ -31,116 +32,11 @@ define([
     });
 
 
-	// underscore.js _.template()のラップメソッド
-	var template = function (template_selector, data) {
-		var $template = jQuery(template_selector).html();
-		var compiled = _.template($template);
-		return compiled(data);
-	};
-
-
-
-	$('.fb-albums').click(function (e) {
-
-		e.preventDefault();
-
-		$.ajax({
-			type: 'post',
-			url: '/fb/albums',
-			dataType: 'json',
-			success: function (data) {
-
-				var view_data = {
-					albums: data.result.albums,
-				};
-				var html = template('#template_fb-albums-contents', view_data);
-				$('#fb-modal-contents').empty().append(html);
-
-			},
-			error: function (XMLHttpRequest, textStatus, errorThrown) {
-				console.log('error');
-				console.log(errorThrown);
-			}
-		});
-
-	});
-
-	$('body').on('click', '.fb-photos', function (e) {
-
-		e.preventDefault();
-
-		var $this = $(this);
-		var album_id = $this.data('album_id');
-
-		var post_data = {
-			album_id: album_id,
-		};
-		$.ajax({
-			type: 'post',
-			url: '/fb/photos',
-			data: post_data,
-			dataType: 'json',
-			success: function (data) {
-
-				var view_data = {
-					photos: data.result.photos,
-				};
-				var html = template('#template_fb-photos-contents', view_data);
-				$('#fb-modal-contents').empty().append(html);
-
-			},
-			error: function (XMLHttpRequest, textStatus, errorThrown) {
-				console.log('error');
-				console.log(errorThrown);
-			}
-		});
-
-	});
-
-	$('body').on('click', '.fb-upload', function (e) {
-
-		e.preventDefault();
-
-		var $this = $(this);
-		var photo_orig_url = $this.data('photo_orig_url');
-		var photo_name = $this.data('photo_name');
-		var photo_ext = $this.data('photo_ext');
-
-		var tmpimg_path = $('#hidden-tmpimg-path').val();
-
-		var post_data = {
-			photo_orig_url: photo_orig_url,
-			photo_name: photo_name,
-			photo_ext: photo_ext,
-			tmpimg_path: tmpimg_path,
-		};
-		$.ajax({
-			type: 'post',
-			url: '/fb/uploadPhoto',
-			data: post_data,
-			dataType: 'json',
-			success: function (data) {
-
-				$('#hidden-tmpimg-url').val(data.result.tmpimg_info.url);
-				$('#hidden-tmpimg-path').val(data.result.tmpimg_info.path);
-				$('#hidden-tmpimg-ext').val(data.result.tmpimg_info.ext);
-
-				var html = '<img src="' + data.result.tmpimg_info.url + '" width="70" height="70" />';
-				$('#selected-img').empty().append(html);
-
-			},
-			error: function (XMLHttpRequest, textStatus, errorThrown) {
-				console.log('error');
-				console.log(errorThrown);
-			}
-		});
-
-	});
-
-
+	// 外部へエクスポート
 	return {
 		jQuery: jQuery,
-		template: template,
+		us_wrap: us_wrap,
+		fb: fb,
 	};
 
 });
