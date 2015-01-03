@@ -10,12 +10,12 @@ class Res extends Base {
 	protected $table = 'ress';
 
 
-	protected $fillable = array(
+	protected $fillable = [
 		'thread_id',
 		'res_no',
 		'body',
 		'user_id',
-	);
+	];
 
 
 	/*** リレーション設定 ***/
@@ -26,5 +26,17 @@ class Res extends Base {
 	public function user(){
 		return $this->belongsTo('User');
 	}
+
+
+	/*** バリデーション設定 ***/
+	protected $attributes = [
+		'body' => '内容',
+	];
+
+	protected $rules = [
+		'body' => [
+			'required',
+		],
+	];
 
 }

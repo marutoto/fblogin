@@ -10,11 +10,11 @@ class Thread extends Base {
 	protected $table = 'threads';
 
 
-	protected $fillable = array(
+	protected $fillable = [
 		'title',
 		'body',
 		'user_id',
-	);
+	];
 
 
 	/*** リレーション設定 ***/
@@ -25,5 +25,21 @@ class Thread extends Base {
 	public function user(){
 		return $this->belongsTo('User');
 	}
+
+
+	/*** バリデーション設定 ***/
+	protected $attributes = [
+		'title' => 'タイトル',
+		'body' => '内容',
+	];
+
+	protected $rules = [
+		'title' => [
+			'required',
+		],
+		'body' => [
+			'required',
+		],
+	];
 
 }

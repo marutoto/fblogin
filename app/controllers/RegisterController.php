@@ -29,14 +29,10 @@ class RegisterController extends BaseController {
 
 		$inputs = Input::only('title', 'body', 'tmpimg_url', 'tmpimg_path', 'tmpimg_ext');
 
-		$validator = Validator::make($inputs,[
-			'title' => 'required',
-			'body' => 'required',
-		]);
-
-		if($validator->fails()) {
+		// バリデーション
+		if(!$this->thread->validate($inputs)) {
 			return Redirect::to('/#thread-form')
-				->withErrors($validator)
+				->withErrors($this->thread->errors())
 				->withInput();
 		}
 
@@ -53,6 +49,13 @@ class RegisterController extends BaseController {
 
 		$inputs = Input::only('title', 'body', 'tmpimg_path', 'tmpimg_ext');
 
+		// バリデーション
+		if(!$this->thread->validate($inputs)) {
+			return Redirect::to('/#thread-form')
+				->withErrors($this->thread->errors())
+				->withInput();
+		}
+
 		try {
 
 			$thread_data = [
@@ -60,7 +63,7 @@ class RegisterController extends BaseController {
 				'body' => $inputs['body'],
 				'user_id' => $this->me->id,
 			];
-			$thread = Thread::create($thread_data);
+			$thread = $this->thread->create($thread_data);
 
 			// ファイルが指定されている、存在する場合、ファイルを一時ディレクトリから移動
 			if($inputs['tmpimg_path']) {
@@ -104,18 +107,15 @@ class RegisterController extends BaseController {
 
 		$inputs = Input::only('body', 'tmpimg_url', 'tmpimg_path', 'tmpimg_ext', 'thread_id');
 
-		$thread = Thread::find($inputs['thread_id']);
+		$thread = $this->thread->find($inputs['thread_id']);
 		if(!$thread) {
 			return Redirect::to('/')->with('error', 'スレッドが存在しません');
 		}
 
-		$validator = Validator::make($inputs,[
-			'body' => 'required',
-		]);
-
-		if($validator->fails()) {
+		// バリデーション
+		if(!$this->res->validate($inputs)) {
 			return Redirect::to('/detail/' . $thread->id . '/#res-form')
-				->withErrors($validator)
+				->withErrors($this->res->errors())
 				->withInput();
 		}
 
@@ -132,12 +132,19 @@ class RegisterController extends BaseController {
 
 		$inputs = Input::only('body', 'tmpimg_path', 'tmpimg_ext', 'thread_id');
 
-		$thread = Thread::find($inputs['thread_id']);
+		$thread = $this->thread->find($inputs['thread_id']);
 		if(!$thread) {
 			return Redirect::to('/')->with('error', 'スレッドが存在しません');
 		}
 
-		$res_last = Res::where('thread_id', $thread->id)
+		// バリデーション
+		if(!$this->res->validate($inputs)) {
+			return Redirect::to('/detail/' . $thread->id . '/#res-form')
+				->withErrors($this->res->errors())
+				->withInput();
+		}
+
+		$res_last = $this->res->where('thread_id', $thread->id)
 			->orderBy('res_no', 'desc')
 			->first();
 		if($res_last) {
@@ -154,7 +161,7 @@ class RegisterController extends BaseController {
 				'body' => $inputs['body'],
 				'user_id' => $this->me->id,
 			];
-			$res = Res::create($res_data);
+			$res = $this->res->create($res_data);
 
 			// ファイルが指定されている、存在する場合、ファイルを一時ディレクトリから移動
 			if($inputs['tmpimg_path']) {

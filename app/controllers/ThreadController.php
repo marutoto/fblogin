@@ -29,7 +29,7 @@ class ThreadController extends BaseController {
 
 		$view_data = [];
 
-		$threads = Thread::with(['ress' => function($q) {
+		$threads = $this->thread->with(['ress' => function($q) {
 			$q->orderBy('res_no', 'desc');
 		}])
 			->orderBy('updated_at', 'desc')
@@ -64,7 +64,7 @@ class ThreadController extends BaseController {
 	 */
 	public function detail($thread_id) {
 
-		$thread = Thread::find($thread_id);
+		$thread = $this->thread->find($thread_id);
 		if(!$thread) {
 			Redirect::to('/')->with('error', 'スレッドがありません');;
 		}

@@ -21,7 +21,17 @@ class User extends Base implements UserInterface, RemindableInterface {
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password', 'remember_token');
+	protected $hidden = ['password', 'remember_token'];
+
+
+	protected $fillable = [
+		'fbid',
+		'first_name',
+		'last_name',
+		'name',
+		'gender',
+		'photo',
+	];
 
 
 	/*** リレーション設定 ***/

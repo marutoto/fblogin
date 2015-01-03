@@ -2,8 +2,7 @@
 
 class FacebookController extends BaseController {
 
-	protected $thread;
-	protected $res;
+	protected $user;
 
 	protected $fb;
 
@@ -13,13 +12,12 @@ class FacebookController extends BaseController {
 	 * @param Thread $thread
 	 * @param Res $res
 	 */
-	public function __construct(Thread $thread, Res $res) {
+	public function __construct(User $user) {
 
 		parent::__construct();
 
 		// モデルインスタンスをセット
-		$this->thread = $thread;
-		$this->res = $res;
+		$this->user = $user;
 
 		// Facebook PHP SDK
 		$this->fb = new Facebook(Config::get('facebook'));
@@ -60,18 +58,18 @@ class FacebookController extends BaseController {
 
 		$me = $this->fb->api('/me');
 
-		$user = User::whereFbid($fbid)->first();
+		$user = $this->user->whereFbid($fbid)->first();
 		if(empty($user)) {
 
-			$user = new User;
-			$user->fbid = $me['id'];
-			$user->first_name = $me['first_name'];
-			$user->last_name = $me['last_name'];
-			$user->name = $me['name'];
-			$user->gender = $me['gender'];
-			$user->photo = 'https://graph.facebook.com/'.$me['id'].'/picture?type=large';
-
-			$user->save();
+			$user_data = [
+				'fbid' => $me['id'],
+				'first_name' => $me['first_name'],
+				'last_name' => $me['last_name'],
+				'name' => $me['name'],
+				'gender' => $me['gender'],
+				'photo' => 'https://graph.facebook.com/'.$me['id'].'/picture?type=large',
+			];
+			$user = $this->user->create($user_data);
 
 		}
 

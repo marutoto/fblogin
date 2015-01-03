@@ -4,13 +4,17 @@ class Base extends Eloquent {
 
 	protected $softDelete = true;
 
-	// バリデーション実行メソッド
-	public function validate(array $params) {
 
-		$validator = Validator::make($params, $this->rules);
+	/*** バリデーション ***/
+	protected $errors;
+
+	// バリデーション実行メソッド
+	public function validate(array $inputs) {
+
+		$validator = Validator::make($inputs, $this->rules);
 		$validator->setAttributeNames($this->attributes);
 
-		if(!$validator->passes()) {
+		if($validator->fails()) {
 			$this->errors = $validator->messages();
 			return false;
 		}

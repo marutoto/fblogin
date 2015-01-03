@@ -26,7 +26,7 @@
 			1 {{{ $thread->user->name }}} {{{ $thread->created_at }}}<br>
 			{{ nl2br($thread->body) }}
 			@if($thread->uploaded_img)
-				<img src="{{{ url() . $thread->uploaded_img }}}" />
+				<img src="{{{ url() . $thread->uploaded_img }}}" width="100" height="100" />
 			@endif
 		</div><br>
 
@@ -37,7 +37,7 @@
 				{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ $res->created_at }}}<br>
 				{{ nl2br($res->body) }}<br>
 				@if($res->uploaded_img)
-					<img src="{{{ url() . $res->uploaded_img }}}" />
+					<img src="{{{ url() . $res->uploaded_img }}}" width="100" height="100" />
 				@endif
 			</div>
 		@endforeach
