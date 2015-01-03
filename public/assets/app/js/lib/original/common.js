@@ -57,8 +57,9 @@ define([
 				$('#fb-modal-contents').empty().append(html);
 
 			},
-			error: function () {
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
 				console.log('error');
+				console.log(errorThrown);
 			}
 		});
 
@@ -88,8 +89,9 @@ define([
 				$('#fb-modal-contents').empty().append(html);
 
 			},
-			error: function () {
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
 				console.log('error');
+				console.log(errorThrown);
 			}
 		});
 
@@ -127,8 +129,9 @@ define([
 				$('#selected-img').empty().append(html);
 
 			},
-			error: function () {
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
 				console.log('error');
+				console.log(errorThrown);
 			}
 		});
 

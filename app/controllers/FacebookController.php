@@ -48,11 +48,15 @@ class FacebookController extends BaseController {
 	public function loginCallback() {
 
 		$code = Input::get('code');
-		if(strlen($code) == 0) return Redirect::to('/')->with('error', 'Facebookとの接続でエラーが発生しました。');
+		if(strlen($code) == 0) {
+			return Redirect::to('/')->with('error', 'Facebookとの接続でエラーが発生しました');
+		}
 
 		$fbid = $this->fb->getUser();
 
-		if($fbid == 0) return Redirect::to('/')->with('error', 'エラーが発生しました。');
+		if($fbid == 0) {
+			return Redirect::to('/')->with('error', 'エラーが発生しました');
+		}
 
 		$me = $this->fb->api('/me');
 
@@ -140,14 +144,14 @@ class FacebookController extends BaseController {
 			$tmp = end($tmp);
 			$photo_name = str_replace('?', '', $tmp);
 			$tmp = explode('.', $photo_name);
-			$ext = $tmp[1];
+			$photo_ext = $tmp[1];
 
 			$photos[] = [
 				'orig_url' => $photo['source'],
 				'width' => $photo['width'],
 				'height' => $photo['height'],
 				'name' => $photo_name,
-				'ext' => $ext,
+				'ext' => $photo_ext,
 			];
 
 		}
@@ -182,10 +186,12 @@ class FacebookController extends BaseController {
 		$dl_img = file_get_contents($inputs['photo_orig_url']);
 		file_put_contents($tmpimg_path, $dl_img);
 
-		//TODO:暗号化
+		// 画像の一時アップロードパスを暗号化
+		$tmpimg_path_crypted = Crypt::encrypt($tmpimg_path);
+
 		$tmpimg_info = [
 			'url' => $tmpimg_url,
-			'path' => $tmpimg_path,
+			'path' => $tmpimg_path_crypted,
 			'ext' => $inputs['photo_ext'],
 		];
 

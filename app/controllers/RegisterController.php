@@ -63,7 +63,9 @@ class RegisterController extends BaseController {
 			$thread = Thread::create($thread_data);
 
 			// ファイルが指定されている、存在する場合、ファイルを一時ディレクトリから移動
-			if($inputs['tmpimg_path'] && file_exists($inputs['tmpimg_path'])) {
+			$tmpimg_path = Crypt::decrypt($inputs['tmpimg_path']);
+
+			if($tmpimg_path && file_exists($tmpimg_path)) {
 
 				$file_url = '/assets/uploaded/' . $thread->id . '/';
 				$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
@@ -74,7 +76,7 @@ class RegisterController extends BaseController {
 				$file_url = $file_url . '1.' . $inputs['tmpimg_ext'];
 				$file_path = $file_dir . '1.' . $inputs['tmpimg_ext'];
 
-				rename($inputs['tmpimg_path'], $file_path);
+				rename($tmpimg_path, $file_path);
 
 				$thread->uploaded_img = $file_url;
 				$thread->save();
@@ -146,7 +148,9 @@ class RegisterController extends BaseController {
 			$res = Res::create($inputs);
 
 			// ファイルが指定されている、存在する場合、ファイルを一時ディレクトリから移動
-			if($inputs['tmpimg_path'] && file_exists($inputs['tmpimg_path'])) {
+			$tmpimg_path = Crypt::decrypt($inputs['tmpimg_path']);
+
+			if($tmpimg_path && file_exists($tmpimg_path)) {
 
 				$file_url = '/assets/uploaded/' . $thread->id . '/';
 				$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
@@ -157,7 +161,7 @@ class RegisterController extends BaseController {
 				$file_url = $file_url . $res->res_no .'.' . $inputs['tmpimg_ext'];
 				$file_path = $file_dir . $res->res_no . '.' . $inputs['tmpimg_ext'];
 
-				rename($inputs['tmpimg_path'], $file_path);
+				rename($tmpimg_path, $file_path);
 
 				$res->uploaded_img = $file_url;
 				$res->save();
