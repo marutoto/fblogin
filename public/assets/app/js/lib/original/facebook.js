@@ -37,11 +37,23 @@ define([
 					dataType: 'json',
 					success: function (data) {
 
-						var view_data = {
-							albums: data.result.albums,
-						};
-						var html = us_wrap.template('#template_fb-albums-contents', view_data);
-						$('#fb-modal-contents').empty().append(html);
+						if(data.result.fb_user_photos_permission) {
+
+							if(data.result.albums.length > 0) {
+								var view_data = {
+									albums: data.result.albums,
+								};
+								var html = us_wrap.template('#template_fb-albums-contents', view_data);
+								$('#fb-modal-contents').empty().append(html);
+							} else {
+								$('#fb-modal-contents').empty().append('Facebookアルバムがありません');
+							}
+
+						} else {
+
+							$('#fb-modal-contents').empty().append('<a href="/fb/permitUserphotos">permit</a>');
+
+						}
 
 					},
 					error: function (XMLHttpRequest, textStatus, errorThrown) {

@@ -40,8 +40,8 @@ Route::get('/logout', function() {
 /*** Auth routes ***/
 
 // define Auth filter
-Route::when('thread*', 'auth');
-Route::when('res*', 'auth');
+// Route::when('thread*', 'auth');
+// Route::when('res*', 'auth');
 
 // confirm thread
 Route::post('/thread/confirm', 'RegisterController@confirmThread');
@@ -64,6 +64,13 @@ Route::post('/fb/photos', 'FacebookController@getPhotos');
 
 // temporary upload Facebook Photo
 Route::post('/fb/uploadPhoto', 'FacebookController@uploadPhoto');
+
+// permit Facebook user_photos
+Route::get('/fb/permitUserphotos', 'FacebookController@permitUserphotos');
+
+// permit Facebook user_photos Callback（FacebookAPI経由後のコールバック先）
+Route::get('/fb/permitUserphotosCallback', 'FacebookController@permitUserphotosCallback');
+
 
 
 

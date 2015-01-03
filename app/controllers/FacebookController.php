@@ -32,7 +32,7 @@ class FacebookController extends BaseController {
 
 		$params = array(
 			'redirect_uri' => url('/fb/loginCallback'),
-			'scope' => 'email,user_photos',
+			'scope' => 'user_photos',
 		);
 
 		return Redirect::to($this->fb->getLoginUrl($params));
@@ -47,13 +47,15 @@ class FacebookController extends BaseController {
 
 		$code = Input::get('code');
 		if(strlen($code) == 0) {
-			return Redirect::to('/')->with('error', 'Facebookとの接続でエラーが発生しました');
+			return Redirect::to('/')
+				->with('error', 'Facebookとの接続でエラーが発生しました');
 		}
 
 		$fbid = $this->fb->getUser();
 
 		if($fbid == 0) {
-			return Redirect::to('/')->with('error', 'エラーが発生しました');
+			return Redirect::to('/')
+				->with('error', 'エラーが発生しました');
 		}
 
 		$me = $this->fb->api('/me');
@@ -75,7 +77,8 @@ class FacebookController extends BaseController {
 
 		Auth::login($user);
 
-		return Redirect::to('/')->with('success', 'Facebookログインしました');
+		return Redirect::to('/')
+			->with('success', 'Facebookログインしました');
 
 	}
 
@@ -85,35 +88,46 @@ class FacebookController extends BaseController {
 	 */
 	public function getAlbums() {
 
-		//TODO:user_photosのパーミッションがなければここでも取得
-		// $inputs = Input::only('code');
-		// $url = 'http://fblogin.marutoto.com/fbalbum';
-		// if(!$inputs['code']) {
-		// 	$dialog_url = "http://www.facebook.com/dialog/oauth?client_id=" . Config::get('facebook.appId') . "&redirect_uri=" . urlencode($url) . '&scope=user_photos';
-		// 	echo("<script> top.location.href='" . $dialog_url . "'</script>");
-		// }
+		// Facebook パーミッション「user_photos」を確認
+		$fb_user_photos_permission = false;
 
-		$access_token = $this->fb->getAccessToken();
+		$ret = $this->fb->api("/me/permissions");
+		$permissions = $ret['data'];
 
-		$param = [
-			'access_token' => $access_token,
-		];
-		$ret = $this->fb->api('/me/albums', 'GET', $param);
-		$albums_tmp = $ret['data'];
+		foreach($permissions as $permission) {
+			if($permission['permission'] == 'user_photos' &&
+			   $permission['status'] == 'granted') {
+				$fb_user_photos_permission = true;
+			}
+		}
 
+		// アルバムを取得
 		$albums = [];
-		foreach($albums_tmp as $album) {
+		if($fb_user_photos_permission) {
 
-			$albums[] = [
-				'id' => $album['id'],
-				'name' => $album['name'],
-				'count' => $album['count'],
+			$access_token = $this->fb->getAccessToken();
+
+			$param = [
+				'access_token' => $access_token,
 			];
+			$ret = $this->fb->api('/me/albums', 'GET', $param);
+			$albums_tmp = $ret['data'];
+
+			foreach($albums_tmp as $album) {
+
+				$albums[] = [
+					'id' => $album['id'],
+					'name' => $album['name'],
+					'count' => $album['count'],
+				];
+
+			}
 
 		}
 
 		$data = [
 			'result' => [
+				'fb_user_photos_permission' => $fb_user_photos_permission,
 				'albums' => $albums,
 			],
 			'error' => 0,
@@ -201,6 +215,39 @@ class FacebookController extends BaseController {
 		];
 
 		echo json_encode($data);
+
+	}
+
+
+	/**
+	 * Facebookパーミッション「user_photos」を許可する
+	 */
+	public function permitUserphotos() {
+
+		$params = array(
+			'redirect_uri' => url('/fb/permitUserphotosCallback'),
+			'auth_type' => 'rerequest',
+			'scope' => 'user_photos',
+		);
+
+		return Redirect::to($this->fb->getLoginUrl($params));
+
+	}
+
+
+	/**
+	 * Facebookパーミッション「user_photos」許可後のコールバック
+	 */
+	public function permitUserphotosCallback() {
+
+		$code = Input::get('code');
+		if(strlen($code) == 0) {
+			return Redirect::to('/')
+				->with('error', 'Facebookとの接続でエラーが発生しました');
+		}
+
+		return Redirect::to('/')
+			->with('success', 'Facebook写真の利用を許可しました');
 
 	}
 
