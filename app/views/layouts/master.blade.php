@@ -20,9 +20,9 @@
 				<div class="navbar-header">
 					@if(!empty($me))
 						<img src="{{ $me['photo']}}" width="50" height="50" >
-						{{{ $me['name'] }}}さん <a href="logout">ログアウト</a>
+						{{{ $me['name'] }}}さん <a href="{{ url() . '/logout' }}">ログアウト</a>
 					@else
-						<a href="login/fb">Facebookログイン</a>
+						<a href="{{ url() . '/login/fb' }}">Facebookログイン</a>
 					@endif
 					<a class="navbar-brand" href="{{ url() }}">fblogin.marutoto.com</a>
 				</div>
