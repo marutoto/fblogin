@@ -49,6 +49,12 @@ class RegisterController extends BaseController {
 
 		$inputs = Input::only('title', 'body', 'tmpimg_path', 'tmpimg_ext');
 
+		// 「戻る」押下時
+		if(Input::get('_return')) {
+			return Redirect::to('/#thread-form')
+				->withInput();
+		}
+
 		// バリデーション
 		if(!$this->thread->validate($inputs)) {
 			return Redirect::to('/#thread-form')
@@ -89,11 +95,13 @@ class RegisterController extends BaseController {
 
 			}
 
-			return Redirect::to('/detail/' . $thread->id)->with('success', 'スレッドを作成しました');
+			return Redirect::to('/detail/' . $thread->id)
+				->with('success', 'スレッドを作成しました');
 
 		} catch(Exception $e) {
 
-			return Redirect::to('/')->with('error', 'スレッドの作成に失敗しました');
+			return Redirect::to('/')
+				->with('error', 'スレッドの作成に失敗しました');
 
 		}
 
@@ -109,7 +117,8 @@ class RegisterController extends BaseController {
 
 		$thread = $this->thread->find($inputs['thread_id']);
 		if(!$thread) {
-			return Redirect::to('/')->with('error', 'スレッドが存在しません');
+			return Redirect::to('/')
+				->with('error', 'スレッドが存在しません');
 		}
 
 		// バリデーション
@@ -134,7 +143,14 @@ class RegisterController extends BaseController {
 
 		$thread = $this->thread->find($inputs['thread_id']);
 		if(!$thread) {
-			return Redirect::to('/')->with('error', 'スレッドが存在しません');
+			return Redirect::to('/')
+				->with('error', 'スレッドが存在しません');
+		}
+
+		// 「戻る」押下時
+		if(Input::get('_return')) {
+			return Redirect::to('/detail/' . $thread->id . '/#res-form')
+				->withInput();
 		}
 
 		// バリデーション
@@ -191,11 +207,13 @@ class RegisterController extends BaseController {
 			$thread->updated_at = $res->created_at;
 			$thread->save();
 
-			return Redirect::to('/detail/' . $thread->id)->with('success', 'レスしました <a href="#res_' . $res->res_no . '">>> ' . $res->res_no . '</a>');
+			return Redirect::to('/detail/' . $thread->id)
+				->with('success', 'レスしました <a href="#res_' . $res->res_no . '">>> ' . $res->res_no . '</a>');
 
 		} catch(Exception $e) {
 
-			return Redirect::to('/detail/' . $thread->id)->with('error', 'レスに失敗しました');
+			return Redirect::to('/detail/' . $thread->id)
+				->with('error', 'レスに失敗しました');
 
 		}
 

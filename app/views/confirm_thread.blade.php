@@ -29,11 +29,13 @@
 			@if($inputs['tmpimg_path'] && $inputs['tmpimg_url'])
 				<img src="{{ url() . $inputs['tmpimg_url'] }}" />
 			@endif
+			{{ Form::hidden('tmpimg_url', $inputs['tmpimg_url'], []) }}
 			{{ Form::hidden('tmpimg_path', $inputs['tmpimg_path'], []) }}
 			{{ Form::hidden('tmpimg_ext', $inputs['tmpimg_ext'], []) }}
 
 		</div>
 		<div class="panel-body pos-center">
+			{{ Form::submit('戻る', ['class' => 'btn', 'name' => '_return']) }}
 			{{ Form::submit('スレッド作成', ['class' => 'btn btn-primary']) }}
 		</div>
 		{{ Form::close() }}
