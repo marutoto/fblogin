@@ -37,12 +37,19 @@ class ThreadController extends BaseController {
 			->take(10)
 			->get();
 
-		$ress = [];
+		$ress_all = [];
 		foreach($threads as $thread) {
-			// $ress_desc = $thread->ress->take(10)->toArray();
-			// $ress[$thread->id] = array_reverse($ress_desc);
-			//TODO:reverse
-			$ress[$thread->id] = $thread->ress->take(10);
+			$ress_all[$thread->id] = $thread->ress->take(10);
+		}
+
+		// 最新10レスを昇順に並べ直す
+		$ress = [];
+		foreach ($ress_all as $thread_id => $ress_tmp) {
+			$ress[$thread_id] = [];
+			foreach ($ress_tmp as $res) {
+				$ress[$thread_id][] = $res;
+			}
+			$ress[$thread_id] = array_reverse($ress[$thread_id]);
 		}
 
 		$view_data['threads'] = $threads;
