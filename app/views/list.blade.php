@@ -67,8 +67,8 @@
 				{{ Form::textarea('body', '', ['class' => 'form-control', 'rows' => 3, 'cols' => 40]) }}
 
 				<div id="selected-img">
-					@if(false)
-						<img src="" />
+					@if(Input::old('tmpimg_url'))
+						<img src="{{ url() . Input::old('tmpimg_url') }}" width="70" height="70" />
 					@endif
 				</div>
 				<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
