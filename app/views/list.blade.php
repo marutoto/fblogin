@@ -25,6 +25,9 @@
 		<div>
 			1 {{{ $thread->user->name }}} {{{ $thread->created_at }}}<br>
 			{{ nl2br($thread->body) }}
+			@if($thread->uploaded_img)
+				<img src="{{{ url() . $thread->uploaded_img }}}" />
+			@endif
 		</div><br>
 
 		<br>
@@ -32,7 +35,10 @@
 		@foreach($ress[$thread->id] as $res)
 			<div>
 				{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ $res->created_at }}}<br>
-				{{ nl2br($res->body) }}
+				{{ nl2br($res->body) }}<br>
+				@if($res->uploaded_img)
+					<img src="{{{ url() . $res->uploaded_img }}}" />
+				@endif
 			</div>
 		@endforeach
 
@@ -59,9 +65,15 @@
 				{{ Form::label('body', '内容', ['class' => 'control-label', 'for' => 'body']) }}
 				{{ Form::textarea('body', '', ['class' => 'form-control', 'rows' => 3, 'cols' => 40]) }}
 
-				<div id="selected-img"></div>
+				<div id="selected-img">
+					@if(false)
+						<img src="" />
+					@endif
+				</div>
 				<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
+				{{ Form::hidden('tmpimg_url', '', ['id' => 'hidden-tmpimg-url']) }}
 				{{ Form::hidden('tmpimg_path', '', ['id' => 'hidden-tmpimg-path']) }}
+				{{ Form::hidden('tmpimg_ext', '', ['id' => 'hidden-tmpimg-ext']) }}
 
 				{{ Form::hidden('user_id', $me->id, []) }}
 			</div>
@@ -92,7 +104,7 @@
 
 		<script type="text/template" id="template_fb-photos-contents">
 			<% for(var i = 0, length = photos.length; i < length; i++) { %>
-				<div class="fb-upload" data-photo_orig_url="<%=photos[i].orig_url %>" data-photo_name="<%=photos[i].name %>">
+				<div class="fb-upload" data-photo_orig_url="<%=photos[i].orig_url %>" data-photo_name="<%=photos[i].name %>" data-photo_ext="<%=photos[i].ext %>">
 					<a href="#"><img src="<%=photos[i].orig_url %>" width="70" height="70" /></a>
 				</div>
 			<% } %>

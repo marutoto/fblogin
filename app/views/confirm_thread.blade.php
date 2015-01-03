@@ -16,20 +16,26 @@
 
 <div>
 
-	{{ Form::open(array('url' => url() . '/thread/save', 'files' => true, 'class' => 'form-inline')) }}
+	{{ Form::open(['url' => url() . '/thread/save', 'files' => true, 'class' => 'form-inline']) }}
 		<div class="panel-body pos-center">
-			{{ Form::label('title', 'タイトル', array('class' => 'control-label', 'for' => 'title')) }}
+			{{ Form::label('title', 'タイトル', ['class' => 'control-label', 'for' => 'title']) }}
 			<div>{{{ $inputs['title'] }}}</div>
-			{{ Form::hidden('title', $inputs['title'], array('class' => 'form-control')) }}
+			{{ Form::hidden('title', $inputs['title'], ['class' => 'form-control']) }}
 
-			{{ Form::label('body', '内容', array('class' => 'control-label', 'for' => 'body')) }}
+			{{ Form::label('body', '内容', ['class' => 'control-label', 'for' => 'body']) }}
 			<div>{{ nl2br($inputs['body']) }}</div>
-			{{ Form::hidden('body', $inputs['body'], array('class' => 'form-control', 'rows' => 3, 'cols' => 40)) }}
+			{{ Form::hidden('body', $inputs['body'], ['class' => 'form-control', 'rows' => 3, 'cols' => 40]) }}
+
+			@if($inputs['tmpimg_path'] && $inputs['tmpimg_url'])
+				<img src="{{ url() . $inputs['tmpimg_url'] }}" />
+			@endif
+			{{ Form::hidden('tmpimg_path', $inputs['tmpimg_path'], []) }}
+			{{ Form::hidden('tmpimg_ext', $inputs['tmpimg_ext'], []) }}
 
 			{{ Form::hidden('user_id', $me->id) }}
 		</div>
 		<div class="panel-body pos-center">
-			{{ Form::submit('スレッド作成', array('class' => 'btn btn-primary')) }}
+			{{ Form::submit('スレッド作成', ['class' => 'btn btn-primary']) }}
 		</div>
 		{{ Form::close() }}
 

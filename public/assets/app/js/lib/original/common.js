@@ -102,12 +102,14 @@ define([
 		var $this = $(this);
 		var photo_orig_url = $this.data('photo_orig_url');
 		var photo_name = $this.data('photo_name');
+		var photo_ext = $this.data('photo_ext');
 
 		var tmpimg_path = $('#hidden-tmpimg-path').val();
 
 		var post_data = {
 			photo_orig_url: photo_orig_url,
 			photo_name: photo_name,
+			photo_ext: photo_ext,
 			tmpimg_path: tmpimg_path,
 		};
 		$.ajax({
@@ -117,7 +119,9 @@ define([
 			dataType: 'json',
 			success: function (data) {
 
+				$('#hidden-tmpimg-url').val(data.result.tmpimg_info.url);
 				$('#hidden-tmpimg-path').val(data.result.tmpimg_info.path);
+				$('#hidden-tmpimg-ext').val(data.result.tmpimg_info.ext);
 
 				var html = '<img src="' + data.result.tmpimg_info.url + '" width="70" height="70" />';
 				$('#selected-img').empty().append(html);

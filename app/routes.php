@@ -118,12 +118,13 @@ Route::get('logout', function() {
 /*** Auth routes ***/
 
 // define Auth filter
-Route::when( 'thread*', 'auth' );
+Route::when('thread*', 'auth');
+Route::when('res*', 'auth');
 
 // confirm thread
 Route::post('/thread/confirm', function () {
 
-	$inputs = Input::only('title', 'body', 'user_id');
+	$inputs = Input::only('title', 'body', 'tmpimg_url', 'tmpimg_path', 'tmpimg_ext', 'user_id');
 
 	$validator = Validator::make($inputs,[
 		'title' => 'required',
@@ -144,11 +145,35 @@ Route::post('/thread/confirm', function () {
 // save thread
 Route::post('/thread/save', function () {
 
-	$inputs = Input::only('title', 'body', 'user_id');
+	$inputs = Input::only('title', 'body', 'tmpimg_path', 'tmpimg_ext', 'user_id');
 
 	try {
 
-		$thread = Thread::create($inputs);
+		$thread_data = [
+			'title' => $inputs['title'],
+			'body' => $inputs['body'],
+			'user_id' => $inputs['user_id'],
+		];
+		$thread = Thread::create($thread_data);
+
+		// ファイルが指定されている、存在する場合、ファイルを一時ディレクトリから移動
+		if($inputs['tmpimg_path'] && file_exists($inputs['tmpimg_path'])) {
+
+			$file_url = '/assets/uploaded/' . $thread->id . '/';
+			$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
+			if(!file_exists($file_dir)) {
+				mkdir($file_dir);
+			}
+			$file_url = $file_url . '1.' . $inputs['tmpimg_ext'];
+			$file_path = $file_dir . '1.' . $inputs['tmpimg_ext'];
+
+			rename($inputs['tmpimg_path'], $file_path);
+
+			$thread->uploaded_img = $file_url;
+			$thread->save();
+
+		}
+
 		return Redirect::to('/detail/' . $thread->id)->with('success', 'スレッドを作成しました');
 
 	} catch(Exception $e) {
@@ -280,12 +305,15 @@ Route::post('fbphotos', function () {
 		$tmp = explode('/', $tmp[0]);
 		$tmp = end($tmp);
 		$photo_name = str_replace('?', '', $tmp);
+		$tmp = explode('.', $photo_name);
+		$ext = $tmp[1];
 
 		$photos[] = [
 			'orig_url' => $photo['source'],
 			'width' => $photo['width'],
 			'height' => $photo['height'],
 			'name' => $photo_name,
+			'ext' => $ext,
 		];
 
 	}
@@ -304,7 +332,7 @@ Route::post('fbphotos', function () {
 // temporary upload Facebook Photo
 Route::post('fbupload', function () {
 
-	$inputs = Input::only('photo_orig_url', 'photo_name', 'tmpimg_path');
+	$inputs = Input::only('photo_orig_url', 'photo_name', 'photo_ext', 'tmpimg_path');
 
 	// 既に画像がアップロードされている場合（2回目以降）はtmpimgを削除する
 	if($inputs['tmpimg_path'] && file_exists($inputs['tmpimg_path'])) {
@@ -321,6 +349,7 @@ Route::post('fbupload', function () {
 	$tmpimg_info = [
 		'url' => $tmpimg_url,
 		'path' => $tmpimg_path,
+		'ext' => $inputs['photo_ext'],
 	];
 
 	$data = [

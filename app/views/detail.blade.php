@@ -21,6 +21,9 @@
 	<div>
 		1 {{{ $thread->user->name }}} {{{ $thread->created_at }}}<br>
 		{{ nl2br($thread->body) }}
+		@if($thread->uploaded_img)
+			<img src="{{{ url() . $thread->uploaded_img }}}" />
+		@endif
 	</div>
 
 	<br>
@@ -29,6 +32,9 @@
 		<div id="res_{{{ $res->res_no }}}">
 			{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ $res->created_at }}}<br>
 			{{ nl2br($res->body) }}
+			@if($res->uploaded_img)
+				<img src="{{{ url() . $res->uploaded_img }}}" />
+			@endif
 		</div>
 	@endforeach
 
