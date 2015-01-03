@@ -22,6 +22,12 @@
 			<div>{{ nl2br($inputs['body']) }}</div>
 			{{ Form::hidden('body', $inputs['body'], array('class' => 'form-control', 'rows' => 3, 'cols' => 40)) }}
 
+			@if($inputs['tmpimg_path'] && $inputs['tmpimg_url'])
+				<img src="{{ url() . $inputs['tmpimg_url'] }}" />
+			@endif
+			{{ Form::hidden('tmpimg_path', $inputs['tmpimg_path'], []) }}
+			{{ Form::hidden('tmpimg_ext', $inputs['tmpimg_ext'], []) }}
+
 			{{ Form::hidden('thread_id', $inputs['thread_id']) }}
 			{{ Form::hidden('user_id', $me->id) }}
 		</div>

@@ -48,6 +48,7 @@
 
 	{{-- スレッド作成フォーム --}}
 	@if(!empty($me))
+
 		<div id="thread-form">
 
 			@if($errors->all())

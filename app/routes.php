@@ -188,7 +188,7 @@ Route::post('/thread/save', function () {
 // confirm res
 Route::post('/res/confirm', function () {
 
-	$inputs = Input::only('body', 'thread_id', 'user_id');
+	$inputs = Input::only('body', 'tmpimg_url', 'tmpimg_path', 'tmpimg_ext', 'thread_id', 'user_id');
 
 	$thread = Thread::find($inputs['thread_id']);
 	if(!$thread) {
@@ -213,7 +213,7 @@ Route::post('/res/confirm', function () {
 // save res
 Route::post('/res/save', function () {
 
-	$inputs = Input::only('body', 'thread_id', 'user_id');
+	$inputs = Input::only('body', 'tmpimg_path', 'tmpimg_ext', 'thread_id', 'user_id');
 
 	$thread = Thread::find($inputs['thread_id']);
 	if(!$thread) {
@@ -232,8 +232,29 @@ Route::post('/res/save', function () {
 	try {
 
 		$res = Res::create($inputs);
+
+		// ファイルが指定されている、存在する場合、ファイルを一時ディレクトリから移動
+		if($inputs['tmpimg_path'] && file_exists($inputs['tmpimg_path'])) {
+
+			$file_url = '/assets/uploaded/' . $thread->id . '/';
+			$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
+			if(!file_exists($file_dir)) {
+				mkdir($file_dir);
+			}
+			$file_url = $file_url . $res->res_no .'.' . $inputs['tmpimg_ext'];
+			$file_path = $file_dir . $res->res_no . '.' . $inputs['tmpimg_ext'];
+
+			rename($inputs['tmpimg_path'], $file_path);
+
+			$res->uploaded_img = $file_url;
+			$res->save();
+
+		}
+
+		// スレッド一覧で表示順位を上げるための更新
 		$thread->updated_at = $res->created_at;
-		$thread->save(); // スレッド一覧で表示順位を上げるための更新
+		$thread->save();
+
 		return Redirect::to('/detail/' . $thread->id)->with('success', 'レスしました <a href="#res_' . $res->res_no . '">>> ' . $res->res_no . '</a>');
 
 	} catch(Exception $e) {

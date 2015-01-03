@@ -4,11 +4,12 @@ require([
 
 	// このページで使用するライブラリを指定
 	// require_config.jsのpathsを利用している
-	'jquery',
-	'bootstrap',
+	'common',
 
 // コールバック引数には、ライブラリごとの返り値が順に入る
-], function (jQuery) {
+], function (common) {
+
+
 
 	/*
 	// グローバルに関数を定義する場合

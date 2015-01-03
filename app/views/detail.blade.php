@@ -40,6 +40,7 @@
 
 	{{-- レス作成フォーム --}}
 	@if(!empty($me))
+
 		<div id="res-form">
 
 			@if($errors->all())
@@ -50,20 +51,33 @@
 			</div>
 			@endif
 
-			{{ Form::open(array('url' => url() . '/res/confirm', 'files' => true, 'class' => 'form-inline')) }}
+			{{ Form::open(['url' => url() . '/res/confirm', 'files' => true, 'class' => 'form-inline']) }}
 			<div class="panel-body pos-center">
-				{{ Form::label('body', '内容', array('class' => 'control-label', 'for' => 'body')) }}
-				{{ Form::textarea('body', '', array('class' => 'form-control', 'rows' => 3, 'cols' => 40)) }}
+				{{ Form::label('body', '内容', ['class' => 'control-label', 'for' => 'body']) }}
+				{{ Form::textarea('body', '', ['class' => 'form-control', 'rows' => 3, 'cols' => 40]) }}
 
-				{{ Form::hidden('thread_id', $thread->id) }}
-				{{ Form::hidden('user_id', $me->id) }}
+				<div id="selected-img">
+					@if(false)
+						<img src="" />
+					@endif
+				</div>
+				<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
+				{{ Form::hidden('tmpimg_url', '', ['id' => 'hidden-tmpimg-url']) }}
+				{{ Form::hidden('tmpimg_path', '', ['id' => 'hidden-tmpimg-path']) }}
+				{{ Form::hidden('tmpimg_ext', '', ['id' => 'hidden-tmpimg-ext']) }}
+
+				{{ Form::hidden('thread_id', $thread->id, []) }}
+				{{ Form::hidden('user_id', $me->id, []) }}
 			</div>
 			<div class="panel-body pos-center">
-				{{ Form::submit('レス確認', array('class' => 'btn btn-primary')) }}
+				{{ Form::submit('レス確認', ['class' => 'btn btn-primary']) }}
 			</div>
 			{{ Form::close() }}
 
 		</div>
+
+		@include('fbmodal')
+
 	@endif
 
 
