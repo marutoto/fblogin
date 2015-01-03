@@ -46,7 +46,7 @@ define([
 
 		$.ajax({
 			type: 'post',
-			url: '/fbalbums',
+			url: '/fb/albums',
 			dataType: 'json',
 			success: function (data) {
 
@@ -76,7 +76,7 @@ define([
 		};
 		$.ajax({
 			type: 'post',
-			url: '/fbphotos',
+			url: '/fb/photos',
 			data: post_data,
 			dataType: 'json',
 			success: function (data) {
@@ -114,7 +114,7 @@ define([
 		};
 		$.ajax({
 			type: 'post',
-			url: '/fbupload',
+			url: '/fb/uploadPhoto',
 			data: post_data,
 			dataType: 'json',
 			success: function (data) {

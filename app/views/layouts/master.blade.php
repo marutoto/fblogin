@@ -22,7 +22,7 @@
 						<img src="{{ $me['photo']}}" width="50" height="50" >
 						{{{ $me['name'] }}}さん <a href="{{ url() . '/logout' }}">ログアウト</a>
 					@else
-						<a href="{{ url() . '/login/fb' }}">Facebookログイン</a>
+						<a href="{{ url() . '/fb/login' }}">Facebookログイン</a>
 					@endif
 					<a class="navbar-brand" href="{{ url() }}">fblogin.marutoto.com</a>
 				</div>
