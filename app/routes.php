@@ -163,6 +163,7 @@ Route::post('/thread/save', function () {
 			$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
 			if(!file_exists($file_dir)) {
 				mkdir($file_dir);
+				chmod($file_dir, 0777);
 			}
 			$file_url = $file_url . '1.' . $inputs['tmpimg_ext'];
 			$file_path = $file_dir . '1.' . $inputs['tmpimg_ext'];
@@ -240,6 +241,7 @@ Route::post('/res/save', function () {
 			$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
 			if(!file_exists($file_dir)) {
 				mkdir($file_dir);
+				chmod($file_dir, 0777);
 			}
 			$file_url = $file_url . $res->res_no .'.' . $inputs['tmpimg_ext'];
 			$file_path = $file_dir . $res->res_no . '.' . $inputs['tmpimg_ext'];
