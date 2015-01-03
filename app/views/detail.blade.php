@@ -67,7 +67,6 @@
 				{{ Form::hidden('tmpimg_ext', '', ['id' => 'hidden-tmpimg-ext']) }}
 
 				{{ Form::hidden('thread_id', $thread->id, []) }}
-				{{ Form::hidden('user_id', $me->id, []) }}
 			</div>
 			<div class="panel-body pos-center">
 				{{ Form::submit('レス確認', ['class' => 'btn btn-primary']) }}

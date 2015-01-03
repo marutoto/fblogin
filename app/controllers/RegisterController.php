@@ -27,7 +27,7 @@ class RegisterController extends BaseController {
 	 */
 	public function confirmThread() {
 
-		$inputs = Input::only('title', 'body', 'tmpimg_url', 'tmpimg_path', 'tmpimg_ext', 'user_id');
+		$inputs = Input::only('title', 'body', 'tmpimg_url', 'tmpimg_path', 'tmpimg_ext');
 
 		$validator = Validator::make($inputs,[
 			'title' => 'required',
@@ -51,35 +51,38 @@ class RegisterController extends BaseController {
 	 */
 	public function saveThread() {
 
-		$inputs = Input::only('title', 'body', 'tmpimg_path', 'tmpimg_ext', 'user_id');
+		$inputs = Input::only('title', 'body', 'tmpimg_path', 'tmpimg_ext');
 
 		try {
 
 			$thread_data = [
 				'title' => $inputs['title'],
 				'body' => $inputs['body'],
-				'user_id' => $inputs['user_id'],
+				'user_id' => $this->me->id,
 			];
 			$thread = Thread::create($thread_data);
 
 			// ファイルが指定されている、存在する場合、ファイルを一時ディレクトリから移動
-			$tmpimg_path = Crypt::decrypt($inputs['tmpimg_path']);
+			if($inputs['tmpimg_path']) {
 
-			if($tmpimg_path && file_exists($tmpimg_path)) {
+				$tmpimg_path = Crypt::decrypt($inputs['tmpimg_path']);
+				if(file_exists($tmpimg_path)) {
 
-				$file_url = '/assets/uploaded/' . $thread->id . '/';
-				$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
-				if(!file_exists($file_dir)) {
-					mkdir($file_dir);
-					chmod($file_dir, 0777);
+					$file_url = '/assets/uploaded/' . $thread->id . '/';
+					$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
+					if(!file_exists($file_dir)) {
+						mkdir($file_dir);
+						chmod($file_dir, 0777);
+					}
+					$file_url = $file_url . '1.' . $inputs['tmpimg_ext'];
+					$file_path = $file_dir . '1.' . $inputs['tmpimg_ext'];
+
+					rename($tmpimg_path, $file_path);
+
+					$thread->uploaded_img = $file_url;
+					$thread->save();
+
 				}
-				$file_url = $file_url . '1.' . $inputs['tmpimg_ext'];
-				$file_path = $file_dir . '1.' . $inputs['tmpimg_ext'];
-
-				rename($tmpimg_path, $file_path);
-
-				$thread->uploaded_img = $file_url;
-				$thread->save();
 
 			}
 
@@ -99,7 +102,7 @@ class RegisterController extends BaseController {
 	 */
 	public function confirmRes() {
 
-		$inputs = Input::only('body', 'tmpimg_url', 'tmpimg_path', 'tmpimg_ext', 'thread_id', 'user_id');
+		$inputs = Input::only('body', 'tmpimg_url', 'tmpimg_path', 'tmpimg_ext', 'thread_id');
 
 		$thread = Thread::find($inputs['thread_id']);
 		if(!$thread) {
@@ -127,7 +130,7 @@ class RegisterController extends BaseController {
 	 */
 	public function saveRes() {
 
-		$inputs = Input::only('body', 'tmpimg_path', 'tmpimg_ext', 'thread_id', 'user_id');
+		$inputs = Input::only('body', 'tmpimg_path', 'tmpimg_ext', 'thread_id');
 
 		$thread = Thread::find($inputs['thread_id']);
 		if(!$thread) {
@@ -138,33 +141,42 @@ class RegisterController extends BaseController {
 			->orderBy('res_no', 'desc')
 			->first();
 		if($res_last) {
-			$inputs['res_no'] = $res_last->res_no + 1;
+			$res_no = $res_last->res_no + 1;
 		} else {
-			$inputs['res_no'] = 2;
+			$res_no = 2;
 		}
 
 		try {
 
-			$res = Res::create($inputs);
+			$res_data = [
+				'thread_id' => $thread->id,
+				'res_no' => $res_no,
+				'body' => $inputs['body'],
+				'user_id' => $this->me->id,
+			];
+			$res = Res::create($res_data);
 
 			// ファイルが指定されている、存在する場合、ファイルを一時ディレクトリから移動
-			$tmpimg_path = Crypt::decrypt($inputs['tmpimg_path']);
+			if($inputs['tmpimg_path']) {
 
-			if($tmpimg_path && file_exists($tmpimg_path)) {
+				$tmpimg_path = Crypt::decrypt($inputs['tmpimg_path']);
+				if(file_exists($tmpimg_path)) {
 
-				$file_url = '/assets/uploaded/' . $thread->id . '/';
-				$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
-				if(!file_exists($file_dir)) {
-					mkdir($file_dir);
-					chmod($file_dir, 0777);
+					$file_url = '/assets/uploaded/' . $thread->id . '/';
+					$file_dir = $_SERVER['DOCUMENT_ROOT'] . $file_url;
+					if(!file_exists($file_dir)) {
+						mkdir($file_dir);
+						chmod($file_dir, 0777);
+					}
+					$file_url = $file_url . $res->res_no .'.' . $inputs['tmpimg_ext'];
+					$file_path = $file_dir . $res->res_no . '.' . $inputs['tmpimg_ext'];
+
+					rename($tmpimg_path, $file_path);
+
+					$res->uploaded_img = $file_url;
+					$res->save();
+
 				}
-				$file_url = $file_url . $res->res_no .'.' . $inputs['tmpimg_ext'];
-				$file_path = $file_dir . $res->res_no . '.' . $inputs['tmpimg_ext'];
-
-				rename($tmpimg_path, $file_path);
-
-				$res->uploaded_img = $file_url;
-				$res->save();
 
 			}
 

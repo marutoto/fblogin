@@ -2,6 +2,8 @@
 
 class BaseController extends Controller {
 
+	public $me; // ログイン者の情報（usersテーブル）
+
 	/**
 	 * コンストラクタ
 	 */
@@ -9,7 +11,8 @@ class BaseController extends Controller {
 
 		// ログイン認証チェック
 		if(Auth::check()) {
-			View::share('me', Auth::user());
+			$this->me = Auth::user();
+			View::share('me', $this->me);
 		}
 
 		// ドメインを除いたURLセグメントを取得する

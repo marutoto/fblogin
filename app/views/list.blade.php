@@ -76,7 +76,6 @@
 				{{ Form::hidden('tmpimg_path', '', ['id' => 'hidden-tmpimg-path']) }}
 				{{ Form::hidden('tmpimg_ext', '', ['id' => 'hidden-tmpimg-ext']) }}
 
-				{{ Form::hidden('user_id', $me->id, []) }}
 			</div>
 			<div class="panel-body pos-center">
 				{{ Form::submit('スレッド確認', ['class' => 'btn btn-primary']) }}

@@ -29,7 +29,6 @@
 			{{ Form::hidden('tmpimg_ext', $inputs['tmpimg_ext'], []) }}
 
 			{{ Form::hidden('thread_id', $inputs['thread_id']) }}
-			{{ Form::hidden('user_id', $me->id) }}
 		</div>
 		<div class="panel-body pos-center">
 			{{ Form::submit('レス作成', array('class' => 'btn btn-primary')) }}

@@ -32,7 +32,6 @@
 			{{ Form::hidden('tmpimg_path', $inputs['tmpimg_path'], []) }}
 			{{ Form::hidden('tmpimg_ext', $inputs['tmpimg_ext'], []) }}
 
-			{{ Form::hidden('user_id', $me->id) }}
 		</div>
 		<div class="panel-body pos-center">
 			{{ Form::submit('スレッド作成', ['class' => 'btn btn-primary']) }}
