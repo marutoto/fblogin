@@ -29,6 +29,8 @@ class ThreadController extends BaseController {
 
 		$view_data = [];
 
+		$thread_all = $this->thread->orderBy('updated_at', 'desc')->get();
+
 		$threads = $this->thread->with(['ress' => function($q) {
 			$q->orderBy('res_no', 'desc');
 		}])
@@ -52,6 +54,7 @@ class ThreadController extends BaseController {
 			$ress[$thread_id] = array_reverse($ress[$thread_id]);
 		}
 
+		$view_data['thread_all'] = $thread_all;
 		$view_data['threads'] = $threads;
 		$view_data['ress'] = $ress;
 		return View::make('list', $view_data);

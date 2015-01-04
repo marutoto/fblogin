@@ -14,9 +14,25 @@
 
 @section('content')
 
-	{{-- スレッド一覧 --}}
-	@foreach($threads as $thread)
+	{{-- 全スレッドタイトル一覧 --}}
+	<div class="panel">
+		スレッド一覧
+	</div>
 	<div class="panel panel-info">
+		<div class="panel-body">
+			@foreach($thread_all as $thread)
+				<a href="{{ url() . '/detail/' . $thread->id }}">{{{ $thread->title }}}</a>&nbsp;&nbsp;
+			@endforeach
+		</div>
+	</div>
+
+
+	{{-- 上位10スレッド一覧 --}}
+	<div class="panel">
+		上位10スレッド
+	</div>
+	@foreach($threads as $thread)
+	<div class="panel panel-info" id="thread_{{ $thread->id }}">
 
 		<div class="panel-heading">
 			<a href="{{ url() . '/detail/' . $thread->id }}">{{{ $thread->title }}}</a>

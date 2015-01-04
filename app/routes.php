@@ -39,10 +39,6 @@ Route::get('/logout', function() {
 
 /*** Auth routes ***/
 
-// define Auth filter
-// Route::when('thread*', 'auth');
-// Route::when('res*', 'auth');
-
 // confirm thread
 Route::post('/thread/confirm', 'RegisterController@confirmThread');
 
@@ -70,7 +66,6 @@ Route::get('/fb/permitUserphotos', 'FacebookController@permitUserphotos');
 
 // permit Facebook user_photos Callback（FacebookAPI経由後のコールバック先）
 Route::get('/fb/permitUserphotosCallback', 'FacebookController@permitUserphotosCallback');
-
 
 
 
