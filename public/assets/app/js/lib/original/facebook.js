@@ -31,7 +31,7 @@ define([
 		// Facebookからアルバム一覧を取得する
 		getAlbums: function () {
 
-			$('.fb-albums').click(function (e) {
+			$('body').on('click', '.fb-albums', function (e) {
 
 				e.preventDefault();
 				$('#fb-modal-contents').empty();
