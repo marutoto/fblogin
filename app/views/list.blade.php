@@ -71,7 +71,9 @@
 					{{ Form::hidden('tmpimg_ext', '', ['class' => 'hidden-tmpimg-ext']) }}
 					<div class="selected-img">
 						@if(Input::old('tmpimg_url'))
-							<img src="{{ url() . Input::old('tmpimg_url') }}" class="detail-img" />
+							<div class="panel-body">
+								<img src="{{ url() . Input::old('tmpimg_url') }}" class="detail-img" />
+							</div>
 						@endif
 					</div>
 				</div>
@@ -129,7 +131,9 @@
 						{{ Form::hidden('tmpimg_ext_thread', '', ['class' => 'hidden-tmpimg-ext']) }}
 						<div class="selected-img">
 							@if(Input::old('tmpimg_url_thread'))
-								<img src="{{ url() . Input::old('tmpimg_url_thread') }}" class="detail-img" />
+								<div class="panel-body">
+									<img src="{{ url() . Input::old('tmpimg_url_thread') }}" class="detail-img" />
+								</div>
 							@endif
 						</div>
 					</div>

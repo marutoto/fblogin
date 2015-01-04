@@ -8,17 +8,34 @@
 </div>
 
 <script type="text/template" id="template_fb-albums-contents">
+	アルバムを選択してください。
+	<ul class="list-group">
 	<% for(var i = 0, length = albums.length; i < length; i++) { %>
-		<div class="fb-photos" data-album_id="<%=albums[i].id %>">
+		<li class="fb-photos list-group-item" data-album_id="<%=albums[i].id %>">
 			<a href="#"><%=albums[i].name %></a>
-		</div>
+		</li>
 	<% } %>
+	</ul>
 </script>
 
 <script type="text/template" id="template_fb-photos-contents">
+	写真を選択してください。
+	<ul class="list-group">
 	<% for(var i = 0, length = photos.length; i < length; i++) { %>
-		<div class="fb-upload" data-photo_orig_url="<%=photos[i].orig_url %>" data-photo_name="<%=photos[i].name %>" data-photo_ext="<%=photos[i].ext %>">
+		<li class="fb-upload list-group-item" data-photo_orig_url="<%=photos[i].orig_url %>" data-photo_name="<%=photos[i].name %>" data-photo_ext="<%=photos[i].ext %>">
 			<a href="#"><img src="<%=photos[i].orig_url %>" class="list-img" /></a>
-		</div>
+		</li>
 	<% } %>
+	</ul>
+	<button class="fb-img-back btn">戻る</button>
+</script>
+
+<script type="text/template" id="template_fb-photos-complete">
+	写真の選択が完了しました。ポップアップを閉じてください。
+</script>
+
+<script type="text/template" id="template_fb-photos-imgarea">
+	<div class="panel-body">
+		<img src="<%=src %>" class="detail-img" />
+	</div>
 </script>

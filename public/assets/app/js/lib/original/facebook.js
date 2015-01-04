@@ -19,6 +19,7 @@ define([
 			setEvent.getAlbums();
 			setEvent.getPhotos();
 			setEvent.uploadPhoto();
+			setEvent.backAlbums();
 
 		},
 
@@ -33,6 +34,7 @@ define([
 			$('.fb-albums').click(function (e) {
 
 				e.preventDefault();
+				$('#fb-modal-contents').empty();
 
 				$this_imgbtn = $(this);
 
@@ -77,6 +79,7 @@ define([
 			$('body').on('click', '.fb-photos', function (e) {
 
 				e.preventDefault();
+				$('#fb-modal-contents').empty();
 
 				var $this = $(this);
 				var album_id = $this.data('album_id');
@@ -114,6 +117,7 @@ define([
 			$('body').on('click', '.fb-upload', function (e) {
 
 				e.preventDefault();
+				$('#fb-modal-contents').empty();
 
 				var $this = $(this);
 				var photo_orig_url = $this.data('photo_orig_url');
@@ -139,8 +143,61 @@ define([
 						$this_imgbtn.siblings('.hidden-tmpimg-path').val(data.result.tmpimg_info.path);
 						$this_imgbtn.siblings('.hidden-tmpimg-ext').val(data.result.tmpimg_info.ext);
 
-						var html = '<img src="' + data.result.tmpimg_info.url + '" class="detail-img" />';
+						view_data = {
+							src: data.result.tmpimg_info.url,
+						}
+						var html = us_wrap.template('#template_fb-photos-imgarea', view_data);
 						$this_imgbtn.siblings('.selected-img').empty().append(html);
+
+						var view_data = {};
+						var html = us_wrap.template('#template_fb-photos-complete', view_data);
+						$('#fb-modal-contents').empty().append(html);
+
+					},
+					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						console.log('error');
+						console.log(errorThrown);
+					}
+				});
+
+			});
+
+		},
+
+
+		// アルバム一覧へ戻る
+		backAlbums: function () {
+
+			$('body').on('click', '.fb-img-back', function (e) {
+
+				e.preventDefault();
+				$('#fb-modal-contents').empty();
+
+				$this_imgbtn = $(this);
+
+				$.ajax({
+					type: 'post',
+					url: '/fb/albums',
+					dataType: 'json',
+					success: function (data) {
+
+						if(data.result.fb_user_photos_permission) {
+
+							if(data.result.albums.length > 0) {
+								var view_data = {
+									albums: data.result.albums,
+								};
+								var html = us_wrap.template('#template_fb-albums-contents', view_data);
+								$('#fb-modal-contents').empty().append(html);
+							} else {
+								$('#fb-modal-contents').empty().append('Facebookアルバムがありません');
+							}
+
+						} else {
+
+							$('#fb-modal-contents').empty().append('<a href="/fb/permitUserphotos">permit</a>');
+
+						}
 
 					},
 					error: function (XMLHttpRequest, textStatus, errorThrown) {

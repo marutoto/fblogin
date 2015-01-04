@@ -25,7 +25,7 @@
 						<img src="{{ $me['photo']}}" width="50" height="50" />
 						{{{ $me['name'] }}}さん <a href="{{ url() . '/logout' }}">ログアウト</a>
 					@else
-						<a href="{{ url() . '/fb/login' }}">Facebookログイン</a>
+						<a href="{{ url() . '/fb/login' }}">Facebookでログイン</a>
 					@endif
 				</div>
 			</div>
