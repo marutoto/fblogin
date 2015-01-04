@@ -76,7 +76,7 @@ Route::get('/fb/permitUserphotosCallback', 'FacebookController@permitUserphotosC
 
 /*** エラーハンドリング ***/
 
-// 404
-App::missing(function($exception) {
-    return Redirect::to('/')->with('error', '不正なアクセス、またはURLが間違っています');
+App::error(function (Exception $exception) {
+	return Redirect::to('/')
+		->with('error', '不正なアクセス、またはURLが間違っています');
 });
