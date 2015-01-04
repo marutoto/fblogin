@@ -33,6 +33,11 @@ body {
 	word-break: break-all;
 }
 
+.comment {
+	font-size: 10px;
+	color: #666666;
+}
+
 .error-messages {
 	padding: 10px 20px;
 }

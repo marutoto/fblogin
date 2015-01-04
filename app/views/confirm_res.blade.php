@@ -37,7 +37,7 @@
 		</div>
 
 		<div class="panel-footer pos-center">
-			{{ Form::submit('戻る', ['class' => 'btn', 'name' => '_return']) }}
+			{{ Form::submit('戻る', ['class' => 'btn', 'name' => '_return']) }}<span class="comment">※スレッド詳細へ戻ります</span>&nbsp;&nbsp;&nbsp;&nbsp;
 			{{ Form::submit('書き込む', array('class' => 'btn btn-primary')) }}
 		</div>
 	{{ Form::close() }}
