@@ -14,6 +14,10 @@
 
 @section('content')
 
+<div class="panel">
+	スレッド詳細
+</div>
+
 <div class="panel panel-info">
 
 	<div class="panel-heading">
@@ -25,7 +29,7 @@
 			1 {{{ $thread->user->name }}} {{{ str_replace('-', '/', $thread->created_at) }}}
 		</div>
 		<div class="res-body">
-			{{ nl2br($thread->body) }}
+			{{ nl2br(htmlspecialchars($thread->body, ENT_QUOTES, 'utf-8')) }}
 			@if($thread->uploaded_img)
 				<div>
 					<img src="{{{ url() . $thread->uploaded_img }}}" class="detail-img" />
@@ -44,7 +48,7 @@
 				{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ str_replace('-', '/', $res->created_at) }}}<br>
 			</div>
 			<div class="res-body">
-				{{ nl2br($res->body) }}
+				{{ nl2br(htmlspecialchars($res->body, ENT_QUOTES, 'utf-8')) }}
 				@if($res->uploaded_img)
 					<div>
 						<img src="{{{ url() . $res->uploaded_img }}}" class="detail-img" />

@@ -23,7 +23,7 @@
 	{{ Form::open(array('url' => url() . '/res/save', 'files' => true, 'class' => 'form-inline')) }}
 		<div class="panel-body">
 			{{ Form::label('body', '内容', array('class' => 'control-label', 'for' => 'body')) }}
-			<div>{{ nl2br($inputs['body']) }}</div>
+			<div>{{ nl2br(htmlspecialchars($inputs['body'], ENT_QUOTES, 'utf-8')) }}</div>
 			{{ Form::hidden('body', $inputs['body'], array('class' => 'form-control', 'rows' => 3, 'cols' => 40)) }}
 
 			@if($inputs['tmpimg_path'] && $inputs['tmpimg_url'])

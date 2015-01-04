@@ -27,7 +27,7 @@
 			{{ Form::hidden('title_thread', $inputs['title_thread'], ['class' => 'form-control']) }}
 
 			{{ Form::label('body_thread', '内容', ['class' => 'control-label', 'for' => 'body_thread']) }}
-			<div>{{ nl2br($inputs['body_thread']) }}</div>
+			<div>{{ nl2br(htmlspecialchars($inputs['body_thread'], ENT_QUOTES, 'utf-8')) }}</div>
 			{{ Form::hidden('body_thread', $inputs['body_thread'], ['class' => 'form-control', 'rows' => 3, 'cols' => 40]) }}
 
 			@if($inputs['tmpimg_path_thread'] && $inputs['tmpimg_url_thread'])
