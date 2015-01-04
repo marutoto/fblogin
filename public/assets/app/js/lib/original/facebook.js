@@ -7,6 +7,9 @@ define([
 
 ], function (jQuery, us_wrap) {
 
+	//
+	var $this_imgbtn;
+
 	// Facebook系処理のオブジェクト
 	var fb = {
 
@@ -30,6 +33,8 @@ define([
 			$('.fb-albums').click(function (e) {
 
 				e.preventDefault();
+
+				$this_imgbtn = $(this);
 
 				$.ajax({
 					type: 'post',
@@ -130,12 +135,12 @@ define([
 					dataType: 'json',
 					success: function (data) {
 
-						$('#hidden-tmpimg-url').val(data.result.tmpimg_info.url);
-						$('#hidden-tmpimg-path').val(data.result.tmpimg_info.path);
-						$('#hidden-tmpimg-ext').val(data.result.tmpimg_info.ext);
+						$this_imgbtn.siblings('.hidden-tmpimg-url').val(data.result.tmpimg_info.url);
+						$this_imgbtn.siblings('.hidden-tmpimg-path').val(data.result.tmpimg_info.path);
+						$this_imgbtn.siblings('.hidden-tmpimg-ext').val(data.result.tmpimg_info.ext);
 
 						var html = '<img src="' + data.result.tmpimg_info.url + '" class="detail-img" />';
-						$('#selected-img').empty().append(html);
+						$this_imgbtn.siblings('.selected-img').empty().append(html);
 
 					},
 					error: function (XMLHttpRequest, textStatus, errorThrown) {

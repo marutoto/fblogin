@@ -80,10 +80,10 @@
 
 				<div class="col-xs-4">
 					<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
-					{{ Form::hidden('tmpimg_url', '', ['id' => 'hidden-tmpimg-url']) }}
-					{{ Form::hidden('tmpimg_path', '', ['id' => 'hidden-tmpimg-path']) }}
-					{{ Form::hidden('tmpimg_ext', '', ['id' => 'hidden-tmpimg-ext']) }}
-					<div id="selected-img">
+					{{ Form::hidden('tmpimg_url', '', ['class' => 'hidden-tmpimg-url']) }}
+					{{ Form::hidden('tmpimg_path', '', ['class' => 'hidden-tmpimg-path']) }}
+					{{ Form::hidden('tmpimg_ext', '', ['class' => 'hidden-tmpimg-ext']) }}
+					<div class="selected-img">
 						@if(Input::old('tmpimg_url'))
 							<img src="{{ url() . Input::old('tmpimg_url') }}" class="detail-img" />
 						@endif
@@ -94,7 +94,7 @@
 			</div>
 
 			<div class="panel-footer pos-center">
-				{{ Form::submit('レス確認', ['class' => 'btn btn-primary']) }}
+				{{ Form::submit('書き込む', ['class' => 'btn btn-primary']) }}
 			</div>
 		{{ Form::close() }}
 

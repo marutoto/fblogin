@@ -14,6 +14,10 @@
 
 @section('content')
 
+<div class="panel">
+以下の内容で書き込みます。
+</div>
+
 <div class="panel panel-default">
 
 	{{ Form::open(array('url' => url() . '/res/save', 'files' => true, 'class' => 'form-inline')) }}
@@ -34,7 +38,7 @@
 
 		<div class="panel-footer pos-center">
 			{{ Form::submit('戻る', ['class' => 'btn', 'name' => '_return']) }}
-			{{ Form::submit('レス作成', array('class' => 'btn btn-primary')) }}
+			{{ Form::submit('書き込む', array('class' => 'btn btn-primary')) }}
 		</div>
 	{{ Form::close() }}
 
