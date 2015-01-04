@@ -55,37 +55,41 @@
 
 		@endforeach
 
-		{{ Form::open(['url' => url() . '/res/confirm', 'files' => true, 'class' => 'form-inline']) }}
-			<div class="panel-body">
-				<hr class="split-res">
+		@if(!empty($me))
 
-				<div class="col-xs-8">
-					{{ Form::label('body', '内容', ['class' => 'control-label', 'for' => 'body']) }}
-					{{ Form::textarea('body', '', ['class' => 'form-control w100p', 'rows' => 3, 'cols' => 40]) }}
-				</div>
+			{{ Form::open(['url' => url() . '/res/confirm', 'files' => true, 'class' => 'form-inline']) }}
+				<div class="panel-body">
+					<hr class="split-res">
 
-				<div class="col-xs-4">
-					<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
-					{{ Form::hidden('tmpimg_url', '', ['class' => 'hidden-tmpimg-url']) }}
-					{{ Form::hidden('tmpimg_path', '', ['class' => 'hidden-tmpimg-path']) }}
-					{{ Form::hidden('tmpimg_ext', '', ['class' => 'hidden-tmpimg-ext']) }}
-					<div class="selected-img">
-						@if(Input::old('tmpimg_url'))
-							<div class="panel-body">
-								<img src="{{ url() . Input::old('tmpimg_url') }}" class="detail-img" />
-							</div>
-						@endif
+					<div class="col-xs-8">
+						{{ Form::label('body', '内容', ['class' => 'control-label', 'for' => 'body']) }}
+						{{ Form::textarea('body', '', ['class' => 'form-control w100p', 'rows' => 3, 'cols' => 40]) }}
 					</div>
+
+					<div class="col-xs-4">
+						<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
+						{{ Form::hidden('tmpimg_url', '', ['class' => 'hidden-tmpimg-url']) }}
+						{{ Form::hidden('tmpimg_path', '', ['class' => 'hidden-tmpimg-path']) }}
+						{{ Form::hidden('tmpimg_ext', '', ['class' => 'hidden-tmpimg-ext']) }}
+						<div class="selected-img">
+							@if(Input::old('tmpimg_url'))
+								<div class="panel-body">
+									<img src="{{ url() . Input::old('tmpimg_url') }}" class="detail-img" />
+								</div>
+							@endif
+						</div>
+					</div>
+
+					{{ Form::hidden('thread_id', $thread->id, []) }}
 				</div>
 
-				{{ Form::hidden('thread_id', $thread->id, []) }}
-			</div>
+				<div class="panel-body pos-center">
+					{{ Form::hidden('from_list', 1, []) }}
+					{{ Form::submit('書き込む', ['class' => 'btn btn-primary']) }}
+				</div>
+			{{ Form::close() }}
 
-			<div class="panel-body pos-center">
-				{{ Form::hidden('from_list', 1, []) }}
-				{{ Form::submit('書き込む', ['class' => 'btn btn-primary']) }}
-			</div>
-		{{ Form::close() }}
+		@endif
 
 	</div>
 	@endforeach
