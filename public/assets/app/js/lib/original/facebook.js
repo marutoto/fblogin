@@ -58,7 +58,8 @@ define([
 
 						} else {
 
-							$('#fb-modal-contents').empty().append('<a href="/fb/permitUserphotos">permit</a>');
+							var html = us_wrap.template('#template_fb-no-permission', view_data);
+							$('#fb-modal-contents').empty().append(html);
 
 						}
 
@@ -195,7 +196,8 @@ define([
 
 						} else {
 
-							$('#fb-modal-contents').empty().append('<a href="/fb/permitUserphotos">permit</a>');
+							var html = us_wrap.template('#template_fb-no-permission', view_data);
+							$('#fb-modal-contents').empty().append(html);
 
 						}
 

@@ -31,7 +31,18 @@
 </script>
 
 <script type="text/template" id="template_fb-photos-complete">
-	写真の選択が完了しました。ポップアップを閉じてください。
+	<div class="alert alert-success">
+		写真の選択が完了しました。ポップアップを閉じてください。
+	</div>
+</script>
+
+<script type="text/template" id="template_fb-no-permission">
+	<div class="alert alert-danger">
+		Facebookの写真利用が許可されていません。<br />
+		<a href="/fb/permitUserphotos">こちら</a>をクリックして、利用許可を完了してください。<br />
+		<br />
+		※許可後はスレッド一覧画面へ遷移します
+	</div>
 </script>
 
 <script type="text/template" id="template_fb-photos-imgarea">
