@@ -48,8 +48,12 @@ class RegisterController extends BaseController {
 				->withInput();
 		}
 
+		$inputs_tmp = [
+			'title' => $inputs['title_thread'],
+			'body' => $inputs['body_thread'],
+		];
 		// バリデーション
-		if(!$this->thread->validate($inputs)) {
+		if(!$this->thread->validate($inputs_tmp)) {
 			return Redirect::to('/#thread-form')
 				->withErrors($this->thread->errors())
 				->withInput();
