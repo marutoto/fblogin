@@ -14,10 +14,10 @@
 
 @section('content')
 
-<div>
+<div class="panel panel-default">
 
 	{{ Form::open(['url' => url() . '/thread/save', 'files' => true, 'class' => 'form-inline']) }}
-		<div class="panel-body pos-center">
+		<div class="panel-body">
 			{{ Form::label('title', 'タイトル', ['class' => 'control-label', 'for' => 'title']) }}
 			<div>{{{ $inputs['title'] }}}</div>
 			{{ Form::hidden('title', $inputs['title'], ['class' => 'form-control']) }}
@@ -27,14 +27,15 @@
 			{{ Form::hidden('body', $inputs['body'], ['class' => 'form-control', 'rows' => 3, 'cols' => 40]) }}
 
 			@if($inputs['tmpimg_path'] && $inputs['tmpimg_url'])
-				<img src="{{ url() . $inputs['tmpimg_url'] }}" />
+				<img src="{{ url() . $inputs['tmpimg_url'] }}" class="detail-img" />
 			@endif
 			{{ Form::hidden('tmpimg_url', $inputs['tmpimg_url'], []) }}
 			{{ Form::hidden('tmpimg_path', $inputs['tmpimg_path'], []) }}
 			{{ Form::hidden('tmpimg_ext', $inputs['tmpimg_ext'], []) }}
 
 		</div>
-		<div class="panel-body pos-center">
+
+		<div class="panel-footer pos-center">
 			{{ Form::submit('戻る', ['class' => 'btn', 'name' => '_return']) }}
 			{{ Form::submit('スレッド作成', ['class' => 'btn btn-primary']) }}
 		</div>

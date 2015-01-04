@@ -18,7 +18,7 @@
 <script type="text/template" id="template_fb-photos-contents">
 	<% for(var i = 0, length = photos.length; i < length; i++) { %>
 		<div class="fb-upload" data-photo_orig_url="<%=photos[i].orig_url %>" data-photo_name="<%=photos[i].name %>" data-photo_ext="<%=photos[i].ext %>">
-			<a href="#"><img src="<%=photos[i].orig_url %>" width="70" height="70" /></a>
+			<a href="#"><img src="<%=photos[i].orig_url %>" class="list-img" /></a>
 		</div>
 	<% } %>
 </script>

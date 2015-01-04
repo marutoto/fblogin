@@ -14,17 +14,19 @@
 		@yield('javascript')
 
 	</head>
-	<body role="document" style="padding-top: 50px;">
+	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
+					<a class="navbar-brand" href="{{ url() }}">fblogin.marutoto.com</a>
+				</div>
+				<div class="navbar-header right">
 					@if(!empty($me))
-						<img src="{{ $me['photo']}}" width="50" height="50" >
+						<img src="{{ $me['photo']}}" width="50" height="50" />
 						{{{ $me['name'] }}}さん <a href="{{ url() . '/logout' }}">ログアウト</a>
 					@else
 						<a href="{{ url() . '/fb/login' }}">Facebookログイン</a>
 					@endif
-					<a class="navbar-brand" href="{{ url() }}">fblogin.marutoto.com</a>
 				</div>
 			</div>
 		</div>
@@ -42,7 +44,7 @@
 		</div>
 		@endif
 
-		<div class="container theme-showcase" role="main">
+		<div class="container theme-showcase">
 
 			@yield('content')
 

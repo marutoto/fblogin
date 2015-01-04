@@ -16,40 +16,52 @@
 
 	{{-- スレッド一覧 --}}
 	@foreach($threads as $thread)
-	<div>
+	<div class="panel panel-info">
 
-		<div>
+		<div class="panel-heading">
 			<a href="{{ url() . '/detail/' . $thread->id }}">{{{ $thread->title }}}</a>
 		</div>
 
-		<div>
-			1 {{{ $thread->user->name }}} {{{ $thread->created_at }}}<br>
-			{{ nl2br($thread->body) }}
-			@if($thread->uploaded_img)
-				<img src="{{{ url() . $thread->uploaded_img }}}" width="100" height="100" />
-			@endif
-		</div><br>
-
-		<br>
-
-		@foreach($ress[$thread->id] as $res)
+		<div class="panel-body">
 			<div>
-				{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ $res->created_at }}}<br>
-				{{ nl2br($res->body) }}<br>
-				@if($res->uploaded_img)
-					<img src="{{{ url() . $res->uploaded_img }}}" width="100" height="100" />
+				1 {{{ $thread->user->name }}} {{{ str_replace('-', '/', $thread->created_at) }}}
+			</div>
+			<div class="res-body">
+				{{ nl2br($thread->body) }}
+				@if($thread->uploaded_img)
+					<div>
+						<img src="{{{ url() . $thread->uploaded_img }}}" class="list-img" />
+					</div>
 				@endif
 			</div>
+		</div>
+
+		@foreach($ress[$thread->id] as $res)
+
+			<div class="panel-body">
+				<hr class="split-res">
+				<div>
+					{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ str_replace('-', '/', $res->created_at) }}}
+				</div>
+				<div class="res-body">
+					{{ nl2br($res->body) }}
+					@if($res->uploaded_img)
+						<div>
+							<img src="{{{ url() . $res->uploaded_img }}}" class="list-img" />
+						</div>
+					@endif
+				</div>
+			</div>
+
 		@endforeach
 
 	</div>
-	<hr>
 	@endforeach
 
 	{{-- スレッド作成フォーム --}}
 	@if(!empty($me))
 
-		<div id="thread-form">
+		<div id="thread-form" class="panel panel-default">
 
 			@if($errors->all())
 			<div class="alert alert-danger">
@@ -60,26 +72,43 @@
 			@endif
 
 			{{ Form::open(['url' => url() . '/thread/confirm', 'files' => true, 'class' => 'form-inline']) }}
-			<div class="panel-body pos-center">
-				{{ Form::label('title', 'タイトル', ['class' => 'control-label', 'for' => 'title']) }}
-				{{ Form::text('title', '', ['class' => 'form-control']) }}
-				{{ Form::label('body', '内容', ['class' => 'control-label', 'for' => 'body']) }}
-				{{ Form::textarea('body', '', ['class' => 'form-control', 'rows' => 3, 'cols' => 40]) }}
+				<div class="panel-body">
+					<div class="col-xs-8">
+						<div>
+							<div>
+								{{ Form::label('title', 'タイトル', ['class' => 'control-label', 'for' => 'title']) }}
+							</div>
+							<div>
+								{{ Form::text('title', '', ['class' => 'form-control w100p']) }}
+							</div>
+						</div>
+						<div>
+							<div>
+								{{ Form::label('body', '内容', ['class' => 'control-label', 'for' => 'body']) }}
+							</div>
+							<div>
+								{{ Form::textarea('body', '', ['class' => 'form-control w100p', 'rows' => 3, 'cols' => 40]) }}
+							</div>
+						</div>
+					</div>
 
-				<div id="selected-img">
-					@if(Input::old('tmpimg_url'))
-						<img src="{{ url() . Input::old('tmpimg_url') }}" width="70" height="70" />
-					@endif
+					<div class="col-xs-4">
+						<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
+						{{ Form::hidden('tmpimg_url', '', ['id' => 'hidden-tmpimg-url']) }}
+						{{ Form::hidden('tmpimg_path', '', ['id' => 'hidden-tmpimg-path']) }}
+						{{ Form::hidden('tmpimg_ext', '', ['id' => 'hidden-tmpimg-ext']) }}
+						<div id="selected-img">
+							@if(Input::old('tmpimg_url'))
+								<img src="{{ url() . Input::old('tmpimg_url') }}" class="detail-img" />
+							@endif
+						</div>
+					</div>
+
 				</div>
-				<a class="modal-link fb-albums btn btn-default" href="#fb-modal">Facebook画像選択</a>
-				{{ Form::hidden('tmpimg_url', '', ['id' => 'hidden-tmpimg-url']) }}
-				{{ Form::hidden('tmpimg_path', '', ['id' => 'hidden-tmpimg-path']) }}
-				{{ Form::hidden('tmpimg_ext', '', ['id' => 'hidden-tmpimg-ext']) }}
 
-			</div>
-			<div class="panel-body pos-center">
-				{{ Form::submit('スレッド確認', ['class' => 'btn btn-primary']) }}
-			</div>
+				<div class="panel-footer pos-center">
+					{{ Form::submit('スレッド確認', ['class' => 'btn btn-primary']) }}
+				</div>
 			{{ Form::close() }}
 
 		</div>

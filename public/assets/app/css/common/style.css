@@ -1,3 +1,33 @@
+body {
+	padding-top: 60px;
+}
+.navbar-header.right {
+	float: right;
+	line-height:50px;
+	color: #ffffff;
+}
+
+.split-res {
+	border-color: #d9edf7;
+}
+
+.res-body {
+	padding-left: 30px;
+}
+
+.list-img {
+	width: auto;
+	max-height: 150px;
+}
+
+.detail-img {
+	max-width: 100%;
+	height: auto;
+}
+
+.w100p {
+	width: 100% !important;
+}
 
 .error-messages {
 	padding: 10px 20px;

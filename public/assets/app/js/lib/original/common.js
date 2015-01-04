@@ -19,7 +19,7 @@ define([
         animationSpeed: 400,            // speed of overlay in milliseconds | default=400
         moveModalSpeed: 'slow',         // speed of modal movement when window is resized | slow or fast | default=false
         //background: 'a2d3cd',         // hexidecimal color code - DONT USE #
-        background: '26816a',
+        background: '428bca',
         opacity: 0.2,                   // opacity of modal |  0 - 1 | default = 0.8
         openOnLoad: false,              // open modal on page load | true or false | default=false
         docClose: true,                 // click document to close | true or false | default=true

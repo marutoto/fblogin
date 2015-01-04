@@ -134,7 +134,7 @@ define([
 						$('#hidden-tmpimg-path').val(data.result.tmpimg_info.path);
 						$('#hidden-tmpimg-ext').val(data.result.tmpimg_info.ext);
 
-						var html = '<img src="' + data.result.tmpimg_info.url + '" width="70" height="70" />';
+						var html = '<img src="' + data.result.tmpimg_info.url + '" class="detail-img" />';
 						$('#selected-img').empty().append(html);
 
 					},
