@@ -40,18 +40,18 @@ class ThreadsTableSeeder extends Seeder {
 		DB::table('threads')->delete();
 
 		Thread::create(array(
-			'title' => 'thread no.1',
-			'body' => 'bodybodybodybodybody1',
+			'title' => 'スレッド1',
+			'body' => '1月の予定を書く',
 			'user_id' => 1,
 		));
 		Thread::create(array(
-			'title' => 'thread no.2',
-			'body' => 'bodybodybodybodybody1',
+			'title' => 'スレッド2',
+			'body' => '2月の予定を書く',
 			'user_id' => 1,
 		));
 		Thread::create(array(
-			'title' => 'thread no.3',
-			'body' => 'bodybodybodybodybody1',
+			'title' => 'スレッド3',
+			'body' => '3月の予定を書く',
 			'user_id' => 1,
 		));
 	}
@@ -65,85 +65,85 @@ class RessTableSeeder extends Seeder {
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 2,
-			'body' => 'bodybodybodybodybody2',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 3,
-			'body' => 'bodybodybodybodybody3',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 4,
-			'body' => 'bodybodybodybodybody4',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 5,
-			'body' => 'bodybodybodybodybody5',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 6,
-			'body' => 'bodybodybodybodybody6',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 7,
-			'body' => 'bodybodybodybodybody7',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 8,
-			'body' => 'bodybodybodybodybody8',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 9,
-			'body' => 'bodybodybodybodybody9',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 10,
-			'body' => 'bodybodybodybodybody10',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 11,
-			'body' => 'bodybodybodybodybody11',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 12,
-			'body' => 'bodybodybodybodybody12',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 13,
-			'body' => 'bodybodybodybodybody13',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 14,
-			'body' => 'bodybodybodybodybody14',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 1,
 			'Res_no' => 15,
-			'body' => 'bodybodybodybodybody15',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 
@@ -151,25 +151,25 @@ class RessTableSeeder extends Seeder {
 		Res::create(array(
 			'thread_id' => 2,
 			'Res_no' => 2,
-			'body' => 'bodybodybodybodybody2',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 2,
 			'Res_no' => 3,
-			'body' => 'bodybodybodybodybody3',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 2,
 			'Res_no' => 4,
-			'body' => 'bodybodybodybodybody4',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 		Res::create(array(
 			'thread_id' => 2,
 			'Res_no' => 5,
-			'body' => 'bodybodybodybodybody5',
+			'body' => '内容内容内容内容',
 			'user_id' => 1,
 		));
 
