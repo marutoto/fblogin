@@ -21,7 +21,7 @@
 <div class="panel panel-default">
 
 	{{ Form::open(array('url' => url() . '/res/save', 'files' => true, 'class' => 'form-inline')) }}
-		<div class="panel-body">
+		<div class="panel-body disp-string">
 			{{ Form::label('body', '内容', array('class' => 'control-label', 'for' => 'body')) }}
 			<div>{{ nl2br(htmlspecialchars($inputs['body'], ENT_QUOTES, 'utf-8')) }}</div>
 			{{ Form::hidden('body', $inputs['body'], array('class' => 'form-control', 'rows' => 3, 'cols' => 40)) }}

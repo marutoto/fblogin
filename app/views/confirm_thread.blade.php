@@ -21,7 +21,7 @@
 <div class="panel panel-default">
 
 	{{ Form::open(['url' => url() . '/thread/save', 'files' => true, 'class' => 'form-inline']) }}
-		<div class="panel-body">
+		<div class="panel-body disp-string">
 			{{ Form::label('title_thread', 'タイトル', ['class' => 'control-label', 'for' => 'title_thread']) }}
 			<div>{{{ $inputs['title_thread'] }}}</div>
 			{{ Form::hidden('title_thread', $inputs['title_thread'], ['class' => 'form-control']) }}

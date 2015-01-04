@@ -20,15 +20,15 @@
 
 <div class="panel panel-info">
 
-	<div class="panel-heading">
+	<div class="panel-heading disp-string">
 		{{{ $thread->title }}}
 	</div>
 
-	<div class="panel-body">
+	<div class="panel-body disp-string">
 		<div>
 			1 {{{ $thread->user->name }}} {{{ str_replace('-', '/', $thread->created_at) }}}
 		</div>
-		<div class="res-body">
+		<div class="res-body disp-string">
 			{{ nl2br(htmlspecialchars($thread->body, ENT_QUOTES, 'utf-8')) }}
 			@if($thread->uploaded_img)
 				<div>
@@ -42,12 +42,12 @@
 
 	@foreach($thread->ress as $res)
 
-		<div class="panel-body" id="res_{{{ $res->res_no }}}">
+		<div class="panel-body disp-string" id="res_{{{ $res->res_no }}}">
 			<hr class="split-res">
 			<div>
 				{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ str_replace('-', '/', $res->created_at) }}}<br>
 			</div>
-			<div class="res-body">
+			<div class="res-body disp-string">
 				{{ nl2br(htmlspecialchars($res->body, ENT_QUOTES, 'utf-8')) }}
 				@if($res->uploaded_img)
 					<div>

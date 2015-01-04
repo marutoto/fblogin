@@ -19,7 +19,7 @@
 		スレッド一覧
 	</div>
 	<div class="panel panel-info">
-		<div class="panel-body">
+		<div class="panel-body disp-string">
 			@foreach($thread_all as $thread)
 				<a href="{{ url() . '/detail/' . $thread->id }}">{{{ $thread->title }}}</a>&nbsp;&nbsp;
 			@endforeach
@@ -34,11 +34,11 @@
 	@foreach($threads as $thread)
 	<div class="panel panel-info" id="thread_{{ $thread->id }}">
 
-		<div class="panel-heading">
+		<div class="panel-heading disp-string">
 			<a href="{{ url() . '/detail/' . $thread->id }}">{{{ $thread->title }}}</a>
 		</div>
 
-		<div class="panel-body">
+		<div class="panel-body disp-string">
 			<div>
 				1 {{{ $thread->user->name }}} {{{ str_replace('-', '/', $thread->created_at) }}}
 			</div>
@@ -56,10 +56,10 @@
 
 			<div class="panel-body">
 				<hr class="split-res">
-				<div>
+				<div class="disp-string">
 					{{{ $res->res_no }}} {{{ $res->user->name }}} {{{ str_replace('-', '/', $res->created_at) }}}
 				</div>
-				<div class="res-body">
+				<div class="res-body disp-string">
 					{{ nl2br(htmlspecialchars($res->body, ENT_QUOTES, 'utf-8')) }}
 					@if($res->uploaded_img)
 						<div>

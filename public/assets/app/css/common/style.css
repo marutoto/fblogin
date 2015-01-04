@@ -29,6 +29,10 @@ body {
 	width: 100% !important;
 }
 
+.disp-string {
+	word-break: break-all;
+}
+
 .error-messages {
 	padding: 10px 20px;
 }
